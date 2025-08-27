@@ -26,7 +26,7 @@ export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
   async (query: string, { rejectWithValue }) => {
     try {
-      const apiKey = "adb051b62f6847bd90d20aa7edb4719e";  
+      const apiKey = "";  
 
       // Ako user unese više itema, splitujemo po zarezu i trimujemo ekstra space
       const ingredients = query.split(",").map((item) => item.trim());
