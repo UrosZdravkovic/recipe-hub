@@ -26,7 +26,7 @@ export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
   async (query: string, { rejectWithValue }) => {
     try {
-      const apiKey = "";  
+      const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
       // Ako user unese više itema, splitujemo po zarezu i trimujemo ekstra space
       const ingredients = query.split(",").map((item) => item.trim());
