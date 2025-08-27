@@ -1,10 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import recipeReducer from "../features/recipes/recipeSlice";
 
-const store = configureStore({
+// Kreiranje store-a
+export const store = configureStore({
   reducer: {
-    recipes: recipeReducer,
+    recipes: recipeReducer, // dodajemo recipes slice
   },
 });
 
-export default store;
+// Tip za ceo state (RootState)
+export type RootState = ReturnType<typeof store.getState>;
+
+// Tip za dispatch
+export type AppDispatch = typeof store.dispatch;

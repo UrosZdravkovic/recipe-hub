@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../services/axios";
 
 
 type Recipe = {
@@ -10,8 +11,8 @@ type Recipe = {
 
 type RecipeState = {
   recipes: Recipe[];
-  loading: false,
-  error: null,
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: RecipeState = {
@@ -20,6 +21,36 @@ const initialState: RecipeState = {
   error: null,
 };
 
+// Thunk to fetch recipes from Spoonacular
+export const fetchRecipes = createAsyncThunk(
+  "recipes/fetchRecipes",
+  async (query: string, { rejectWithValue }) => {
+    try {
+      const apiKey = "adb051b62f6847bd90d20aa7edb4719e";  
+
+      // Ako user unese više itema, splitujemo po zarezu i trimujemo ekstra space
+      const ingredients = query.split(",").map((item) => item.trim());
+
+      const response = await api.get("/recipes/complexSearch", {
+        params: {
+          apiKey,
+          ...(ingredients.length > 1
+            ? { includeIngredients: ingredients.join(",") }
+            : { query }), // ako je samo jedna reč, koristi "query"
+        },
+      });
+
+      return response.data.results.map((item: any) => ({
+        id: item.id.toString(),
+        title: item.title,
+        ingredients: [],
+        instructions: "",
+      }));
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const recipeSlice = createSlice({
   name: "recipes",
@@ -27,7 +58,22 @@ const recipeSlice = createSlice({
   reducers: {
     setRecipes: (state, action: PayloadAction<Recipe[]>) => {
         state.recipes = action.payload;
-    }
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchRecipes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRecipes.fulfilled, (state, action: PayloadAction<Recipe[]>) => {
+        state.recipes = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchRecipes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
