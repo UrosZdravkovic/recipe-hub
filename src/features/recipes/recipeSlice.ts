@@ -24,19 +24,18 @@ const initialState: RecipeState = {
 // Thunk to fetch recipes from Spoonacular
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
-  async (query: string, { rejectWithValue }) => {
+  async ({ query, number }: { query: string; number?: number }, { rejectWithValue }) => {
     try {
       const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
-
-      // Ako user unese više itema, splitujemo po zarezu i trimujemo ekstra space
       const ingredients = query.split(",").map((item) => item.trim());
 
       const response = await api.get("/recipes/complexSearch", {
         params: {
           apiKey,
+          number: number ?? 10, // default to 10 if not provided
           ...(ingredients.length > 1
             ? { includeIngredients: ingredients.join(",") }
-            : { query }), // ako je samo jedna reč, koristi "query"
+            : { query }),
         },
       });
 

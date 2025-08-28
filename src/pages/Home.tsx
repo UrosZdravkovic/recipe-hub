@@ -25,7 +25,9 @@ export default function Home() {
       .filter(Boolean)
       .join(",");
 
-    dispatch(fetchRecipes(query));
+
+
+    dispatch(fetchRecipes({ query, number: 10 }));
   }
 
   // Toggle ingredient in selectedIngredients AND update input field
@@ -60,6 +62,7 @@ export default function Home() {
       </form>
 
       {loading && <p>Loading...</p>}
+      {recipes.length === 0 && !loading && <p>No recipes found.</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <h2>Ingredients by Cuisine</h2>
