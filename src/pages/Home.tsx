@@ -26,7 +26,6 @@ export default function Home() {
       .join(",");
 
 
-
     dispatch(fetchRecipes({ query, number: 10 }));
   }
 
