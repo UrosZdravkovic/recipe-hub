@@ -2,11 +2,12 @@ import { createSlice, type PayloadAction, createAsyncThunk } from "@reduxjs/tool
 import api from "../../services/axios";
 
 
-type Recipe = {
+
+export type Recipe = {
   id: string;
   title: string;
-  ingredients: string[];
-  instructions: string;
+  image?: string;
+
 };
 
 type RecipeState = {
@@ -28,7 +29,7 @@ export const fetchRecipes = createAsyncThunk(
     try {
       const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
       const ingredients = query.split(",").map((item) => item.trim());
-
+      
       const response = await api.get("/recipes/complexSearch", {
         params: {
           apiKey,
@@ -42,8 +43,8 @@ export const fetchRecipes = createAsyncThunk(
       return response.data.results.map((item: any) => ({
         id: item.id.toString(),
         title: item.title,
-        ingredients: [],
-        instructions: "",
+        image: item.image,
+
       }));
     } catch (error: any) {
       return rejectWithValue(error.message);
