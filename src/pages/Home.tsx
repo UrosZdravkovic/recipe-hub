@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div className="flex h-screen">
       {/* Sidebar: Input & ingredient list */}
-      <div className="w-[20%] min-w-[300px] bg-gray-50 p-6 flex flex-col space-y-4 border-r">
+      <div className="w-[20%] min-w-[300px] bg-gray-50 p-6 space-y-4 border-r">
         <form onSubmit={handleSubmit} className="space-y-4">
           {selectedIngredients.map((ing) => (
             <Badge
