@@ -7,7 +7,6 @@ export type Recipe = {
   id: string;
   title: string;
   image?: string;
-
 };
 
 type RecipeState = {
@@ -43,9 +42,9 @@ export const fetchRecipes = createAsyncThunk(
       return response.data.results.map((item: any) => ({
         id: item.id.toString(),
         title: item.title,
-        image: item.image,
-
+        image: item.image
       }));
+
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
