@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchRecipes } from "../features/recipes/recipeSlice";
 import IngredientInput from "../components/custom/IngredientInput";
 import RecipeList from "@/components/custom/RecipeList";
+import { removeIngredient } from "@/features/recipes/ingredientsSlice";
+import { Badge } from "@/components/ui/badge";
 
 
 
@@ -24,18 +26,29 @@ export default function Home() {
 
 
   return (
-    <div className="p-6 space-y-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Selected ingredients */}
+    <div className="flex h-screen">
+      {/* Sidebar: Input & ingredient list */}
+      <div className="w-[20%] min-w-[300px] bg-gray-50 p-6 flex flex-col space-y-4 border-r">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {selectedIngredients.map((ing) => (
+            <Badge
+              key={ing.id}
+              variant="secondary"
+              className="cursor-pointer"
+              onClick={() => dispatch(removeIngredient(ing.id))}
+            >
+              {ing.name} ✕
+            </Badge>
+          ))}
+          <IngredientInput />
+          <Button type="submit">Search Recipes</Button>
+        </form>
+      </div>
 
-        {/* Command input za pretragu */}
-        <IngredientInput />
-
-        {/* Dugme za search */}
-        <Button type="submit">Search Recipes</Button>
-      </form>
-
-      <RecipeList />
+      {/* Main content: Recipe list */}
+      <div className="w-[80%] p-6 overflow-y-auto">
+        <RecipeList />
+      </div>
     </div>
   );
 }

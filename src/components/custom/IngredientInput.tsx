@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addIngredient, removeIngredient, type Ingredient } from "../../features/recipes/ingredientsSlice";
 import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
-import { Badge } from "../ui/badge";
+
 
 
 export default function IngredientInput() {
@@ -28,35 +28,23 @@ export default function IngredientInput() {
 
 
 
-    // ...existing code...
     return (
-        <Command className="w-[50%] border rounded-lg ">
-            {/* Flex container for badges and input */}
-            <div className="flex flex-wrap items-center gap-2 p-2">
-
+        <Command className="w-full max-w-md border rounded-lg p-2 bg-white overflow-visible">
+            <div>
                 <CommandInput
                     placeholder="Type ingredient..."
                     value={query}
                     onValueChange={setQuery}
-                    className="flex-1 min-w-[250px] text-decoration-none"
+                    className="w-full px-3 py-2 border-none outline-none"
                 />
-
-                {selectedIngredients.map((ing) => (
-                    <Badge
-                        key={ing.id}
-                        variant="secondary"
-                        className="cursor-pointer"
-                        onClick={() => dispatch(removeIngredient(ing.id))}
-                    >
-                        {ing.name} ✕
-                    </Badge>
-                ))}
             </div>
             {query.length > 0 && (
                 <CommandList className="max-h-40 overflow-auto">
                     {allIngredients
-                        .filter((ing) =>
-                            ing.name.toLowerCase().includes(query.toLowerCase())
+                        .filter(
+                            (ing) =>
+                                ing.name.toLowerCase().includes(query.toLowerCase()) &&
+                                !selectedIngredients.some((sel) => sel.id === ing.id)
                         )
                         .map((ing) => (
                             <CommandItem
@@ -71,6 +59,4 @@ export default function IngredientInput() {
             )}
         </Command>
     )
-    // ...existing code...
-
 }
