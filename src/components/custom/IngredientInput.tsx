@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addIngredient, removeIngredient, type Ingredient } from "../../features/recipes/ingredientsSlice";
 import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
-import { Badge } from "@/components/ui/badge";
+
 
 export default function IngredientInput() {
     const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ export default function IngredientInput() {
         <Command className="w-full max-w-md border rounded-lg p-2 bg-white">
             <div>
                 <CommandInput
-                    placeholder="Type ingredient..."
+                    placeholder="Your ingredients..."
                     value={query}
                     onValueChange={setQuery}
                 />

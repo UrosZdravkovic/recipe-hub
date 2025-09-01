@@ -30,6 +30,11 @@ export default function Home() {
       {/* Sidebar: Input & ingredient list */}
       <div className="w-[20%] min-w-[300px] bg-gray-50 p-6 space-y-4 border-r">
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="pl-2">
+            {selectedIngredients.length === 0 && (
+              <span className="block text-sm text-gray-400 italic mb-2">No ingredients selected</span>
+            )}    
+          </div>
           {selectedIngredients.map((ing) => (
             <Badge
               key={ing.id}
