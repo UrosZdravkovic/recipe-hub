@@ -1,47 +1,32 @@
-import { createSlice,type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import ingredientsData from "@/data/ingredients.json";
 
 export type Ingredient = {
   id: string;
   name: string;
 };
 
-export type CuisineIngredients = {
-  cuisine: string;
+export type CategoryIngredients = {
+  category: string;
   ingredients: Ingredient[];
 };
 
 interface IngredientState {
-  defaultIngredients: CuisineIngredients[];
-  selectedIngredients: Ingredient[]; // ingredients the user selects
+  defaultIngredients: CategoryIngredients[];
+  selectedIngredients: Ingredient[];
 }
 
+// Convert JSON to state format
+const defaultIngredients: CategoryIngredients[] = ingredientsData.categories.map((cat, idx) => ({
+  category: cat.name,
+  ingredients: cat.ingredients.map((name, i) => ({
+    id: `${idx}-${i}`,
+    name,
+  })),
+}));
+
 const initialState: IngredientState = {
-  defaultIngredients: [
-    {
-      cuisine: "Italian",
-      ingredients: [
-        { id: "1", name: "tomato" },
-        { id: "2", name: "olive oil" },
-        { id: "3", name: "basil" },
-      ],
-    },
-    {
-      cuisine: "Japanese",
-      ingredients: [
-        { id: "4", name: "soy sauce" },
-        { id: "5", name: "mirin" },
-        { id: "6", name: "nori" },
-      ],
-    },
-    {
-      cuisine: "Mexican",
-      ingredients: [
-        { id: "7", name: "corn" },
-        { id: "8", name: "chili pepper" },
-        { id: "9", name: "cilantro" },
-      ],
-    },
-  ],
+  defaultIngredients,
   selectedIngredients: [],
 };
 

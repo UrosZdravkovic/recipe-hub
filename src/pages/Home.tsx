@@ -5,6 +5,7 @@ import IngredientInput from "../components/custom/IngredientInput";
 import RecipeList from "@/components/custom/RecipeList";
 import { removeIngredient } from "@/features/recipes/ingredientsSlice";
 import { Badge } from "@/components/ui/badge";
+import IngredientsList from "@/components/custom/IngredientsList";
 
 
 
@@ -48,6 +49,7 @@ export default function Home() {
           <IngredientInput />
           <Button type="submit">Search Recipes</Button>
         </form>
+        <IngredientsList />
       </div>
 
       {/* Main content: Recipe list */}

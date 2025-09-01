@@ -1,0 +1,82 @@
+{
+  "categories": [
+    {
+      "name": "Fruits",
+      "ingredients": [
+        "apple", "banana", "orange", "pear", "peach", "grape", "lemon", "watermelon", "plum", "raspberry", "blueberry", "strawberry", "kiwi", "pineapple", "mango", "apricot", "cherry", "pomegranate", "fig", "blackberry", "coconut", "lime", "papaya", "passion fruit", "melon", "cranberry", "date", "gooseberry", "guava", "nectarine"
+      ]
+    },
+    {
+      "name": "Vegetables",
+      "ingredients": [
+        "tomato", "cucumber", "pepper", "onion", "carrot", "cabbage", "zucchini", "broccoli", "cauliflower", "spinach", "celery", "lettuce", "eggplant", "pumpkin", "radish", "beetroot", "leek", "garlic", "potato", "sweet potato", "corn", "peas", "green bean", "artichoke", "asparagus", "brussels sprout", "turnip", "parsnip", "kale", "chard"
+      ]
+    },
+    {
+      "name": "Meat",
+      "ingredients": [
+        "chicken", "beef", "pork", "turkey", "lamb", "veal", "duck", "goose", "rabbit", "quail", "venison", "bacon", "ham", "sausage", "salami"
+      ]
+    },
+    {
+      "name": "Fish and Seafood",
+      "ingredients": [
+        "salmon", "trout", "tuna", "hake", "sardine", "anchovy", "mackerel", "cod", "shrimp", "crab", "lobster", "squid", "octopus", "clam", "mussel", "oyster", "scallop", "prawn"
+      ]
+    },
+    {
+      "name": "Grains",
+      "ingredients": [
+        "rice", "wheat", "corn", "barley", "rye", "millet", "oats", "quinoa", "buckwheat", "spelt", "bulgur", "couscous", "amaranth"
+      ]
+    },
+    {
+      "name": "Dairy",
+      "ingredients": [
+        "milk", "yogurt", "cheese", "cream", "butter", "cottage cheese", "sour cream", "feta", "mozzarella", "parmesan", "gouda", "brie", "camembert", "ricotta", "ice cream"
+      ]
+    },
+    {
+      "name": "Legumes",
+      "ingredients": [
+        "bean", "lentil", "pea", "chickpea", "soybean", "green bean", "broad bean", "black bean", "kidney bean", "navy bean", "pinto bean", "mung bean", "split pea"
+      ]
+    },
+    {
+      "name": "Nuts and Seeds",
+      "ingredients": [
+        "walnut", "hazelnut", "almond", "peanut", "cashew", "pistachio", "pecan", "macadamia", "pine nut", "brazil nut", "chestnut", "sunflower seed", "pumpkin seed", "sesame seed", "chia seed", "flaxseed", "hemp seed"
+      ]
+    },
+    {
+      "name": "Oils and Fats",
+      "ingredients": [
+        "olive oil", "sunflower oil", "coconut oil", "butter", "lard", "canola oil", "sesame oil", "corn oil", "soybean oil", "peanut oil", "grapeseed oil", "avocado oil", "palm oil", "margarine", "ghee"
+      ]
+    },
+    {
+      "name": "Spices and Herbs",
+      "ingredients": [
+        "salt", "black pepper", "basil", "oregano", "rosemary", "parsley", "cinnamon", "curry", "thyme", "bay leaf", "paprika", "nutmeg", "clove", "coriander", "dill", "mint", "sage", "tarragon", "chili", "cardamom", "cumin", "fennel", "garlic powder", "onion powder", "ginger", "turmeric", "vanilla", "allspice", "marjoram"
+      ]
+    },
+    {
+      "name": "Bakery",
+      "ingredients": [
+        "bread", "roll", "bagel", "bun", "croissant", "brioche", "toast", "muffin", "cake", "pie", "cookie", "biscuit", "cracker", "pretzel", "pita", "tortilla"
+      ]
+    },
+    {
+      "name": "Beverages",
+      "ingredients": [
+        "water", "tea", "coffee", "juice", "milk", "lemonade", "soda", "wine", "beer", "whiskey", "vodka", "rum", "liqueur", "smoothie", "cocoa"
+      ]
+    },
+    {
+      "name": "Sweets",
+      "ingredients": [
+        "sugar", "honey", "jam", "chocolate", "candy", "caramel", "marshmallow", "syrup", "molasses", "jelly", "ice cream", "pudding"
+      ]
+    }
+  ]
+}
