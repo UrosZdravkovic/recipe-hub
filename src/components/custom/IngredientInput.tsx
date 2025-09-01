@@ -32,7 +32,7 @@ export default function IngredientInput() {
         <Command className="w-full max-w-md border rounded-lg p-2 bg-white">
             <div>
                 <CommandInput
-                    placeholder="Your ingredients..."
+                    placeholder="Find ingredients..."
                     value={query}
                     onValueChange={setQuery}
                 />
