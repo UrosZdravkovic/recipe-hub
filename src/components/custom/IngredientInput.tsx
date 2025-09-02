@@ -1,15 +1,33 @@
 import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addIngredient, removeIngredient, type Ingredient } from "../../features/recipes/ingredientsSlice";
 import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
 
 
 export default function IngredientInput() {
+
+    const commandRef = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
     const { defaultIngredients, selectedIngredients } = useAppSelector(
         (state) => state.ingredients
     );
     const [query, setQuery] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
+
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent){
+            if (commandRef.current && !commandRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []); 
 
     function handleSelect(ing: Ingredient) {
         const isSelected = selectedIngredients.some((i) => i.id === ing.id);
@@ -29,15 +47,18 @@ export default function IngredientInput() {
     );
 
     return (
-        <Command className="w-full max-w-md border rounded-lg p-2 bg-white">
+        <Command ref={commandRef} className="w-full max-w-md border rounded-lg p-2 bg-white">
             <div>
                 <CommandInput
                     placeholder="Find ingredients..."
                     value={query}
-                    onValueChange={setQuery}
+                    onValueChange={val => {
+                        setQuery(val);
+                        setIsOpen(val.length > 0);
+                    }}
                 />
             </div>
-            {query.length > 0 && (
+            {isOpen && (
                 <CommandList className="max-h-40 overflow-auto">
                     {filteredIngredients.map((ing) => (
                         <CommandItem
