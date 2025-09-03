@@ -1,5 +1,7 @@
 import { useAppSelector } from "@/app/hooks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
+import NoRecipesFound from "./NoRecipesFound";
+import CookingLoader from "./CookingLoader";
 
 
 const FALLBACK_IMAGE = "https://via.placeholder.com/256?text=No+Image";
@@ -9,8 +11,15 @@ function capitalize(str: string) {
 }
 
 export default function RecipeList() {
-  const { recipes } = useAppSelector((state) => state.recipes);
+  const { recipes, loading } = useAppSelector((state) => state.recipes);
 
+  if (loading) {
+    return <CookingLoader />;
+  }
+
+  if (recipes.length === 0) {
+    return <NoRecipesFound />;
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -24,7 +33,7 @@ export default function RecipeList() {
           </h3>
           <img
             src={recipe.image || FALLBACK_IMAGE}
-            alt={recipe.title} 
+            alt={recipe.title}
             className="w-64 h-64 object-cover rounded bg-gray-100"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;

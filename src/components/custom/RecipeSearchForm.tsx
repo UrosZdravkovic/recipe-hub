@@ -25,7 +25,9 @@ export default function RecipeSearchForm() {
             setTimeout(() => setShowTooltip(false), 2000); // Hide after 2s
             return;
         }
+
         dispatch(fetchRecipes({ query: queryString, number: 10 }));
+
     };
 
     return (

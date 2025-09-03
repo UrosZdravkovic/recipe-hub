@@ -58,6 +58,9 @@ const recipeSlice = createSlice({
     setRecipes: (state, action: PayloadAction<Recipe[]>) => {
         state.recipes = action.payload;
     },
+    setLoading: (state, action) => {
+    state.loading = action.payload;
+  },
   },
   extraReducers: (builder) => {
     builder
@@ -76,6 +79,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { setRecipes } = recipeSlice.actions;
+export const { setRecipes, setLoading } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

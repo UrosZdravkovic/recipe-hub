@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addIngredient, removeIngredient, type Ingredient } from "../../features/recipes/ingredientsSlice";
+import { setLoading } from "@/features/recipes/recipeSlice";
 import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
 
 
@@ -18,7 +19,7 @@ export default function IngredientInput() {
 
 
     useEffect(() => {
-        function handleClickOutside(event: MouseEvent){
+        function handleClickOutside(event: MouseEvent) {
             if (commandRef.current && !commandRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
@@ -27,9 +28,10 @@ export default function IngredientInput() {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []); 
+    }, []);
 
     function handleSelect(ing: Ingredient) {
+
         const isSelected = selectedIngredients.some((i) => i.id === ing.id);
         if (isSelected) {
             dispatch(removeIngredient(ing.id));
