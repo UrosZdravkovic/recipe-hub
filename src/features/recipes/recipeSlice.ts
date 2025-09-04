@@ -39,6 +39,8 @@ export const fetchRecipes = createAsyncThunk(
         },
       });
 
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       return response.data.results.map((item: any) => ({
         id: item.id.toString(),
         title: item.title,
@@ -57,10 +59,7 @@ const recipeSlice = createSlice({
   reducers: {
     setRecipes: (state, action: PayloadAction<Recipe[]>) => {
         state.recipes = action.payload;
-    },
-    setLoading: (state, action) => {
-    state.loading = action.payload;
-  },
+    }, 
   },
   extraReducers: (builder) => {
     builder
@@ -79,6 +78,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { setRecipes, setLoading } = recipeSlice.actions;
+export const { setRecipes } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

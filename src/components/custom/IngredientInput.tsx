@@ -3,7 +3,6 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addIngredient, removeIngredient, type Ingredient } from "../../features/recipes/ingredientsSlice";
-import { setLoading } from "@/features/recipes/recipeSlice";
 import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
 
 
@@ -14,6 +13,7 @@ export default function IngredientInput() {
     const { defaultIngredients, selectedIngredients } = useAppSelector(
         (state) => state.ingredients
     );
+
     const [query, setQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 
@@ -31,13 +31,16 @@ export default function IngredientInput() {
     }, []);
 
     function handleSelect(ing: Ingredient) {
-
         const isSelected = selectedIngredients.some((i) => i.id === ing.id);
+
         if (isSelected) {
             dispatch(removeIngredient(ing.id));
         } else {
             dispatch(addIngredient(ing));
         }
+
+        console.log(selectedIngredients)
+
         setQuery("");
     }
 
@@ -55,8 +58,10 @@ export default function IngredientInput() {
                     placeholder="Find ingredients..."
                     value={query}
                     onValueChange={val => {
+                        // If query was empty and now has a value, set loading to true
                         setQuery(val);
                         setIsOpen(val.length > 0);
+
                     }}
                 />
             </div>

@@ -1,10 +1,10 @@
 import { useAppSelector } from "@/app/hooks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
-import NoRecipesFound from "./NoRecipesFound";
 import CookingLoader from "./CookingLoader";
+import FindYourRecipes from "./FindYourRecipes";
 
 
-const FALLBACK_IMAGE = "https://via.placeholder.com/256?text=No+Image";
+
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -13,12 +13,15 @@ function capitalize(str: string) {
 export default function RecipeList() {
   const { recipes, loading } = useAppSelector((state) => state.recipes);
 
+
+
+
   if (loading) {
     return <CookingLoader />;
   }
 
   if (recipes.length === 0) {
-    return <NoRecipesFound />;
+    return <FindYourRecipes />;
   }
 
   return (
@@ -32,12 +35,9 @@ export default function RecipeList() {
             {capitalize(recipe.title)}
           </h3>
           <img
-            src={recipe.image || FALLBACK_IMAGE}
+            src={recipe.image}
             alt={recipe.title}
-            className="w-64 h-64 object-cover rounded bg-gray-100"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;
-            }}
+            className="w-full h-48 object-cover rounded-md mb-4"
           />
         </div>
       ))}
