@@ -39,8 +39,6 @@ export default function IngredientInput() {
             dispatch(addIngredient(ing));
         }
 
-        console.log(selectedIngredients)
-
         setQuery("");
     }
 

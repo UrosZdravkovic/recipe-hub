@@ -6,7 +6,8 @@ import api from "../../services/axios";
 export type Recipe = {
   id: string;
   title: string;
-  image?: string;
+  image: string;
+  sourceUrl: string;
 };
 
 type RecipeState = {
@@ -32,6 +33,7 @@ export const fetchRecipes = createAsyncThunk(
       const response = await api.get("/recipes/complexSearch", {
         params: {
           apiKey,
+          addRecipeInformation: true,
           number: number ?? 10, // default to 10 if not provided
           ...(ingredients.length > 1
             ? { includeIngredients: ingredients.join(",") }
@@ -44,7 +46,8 @@ export const fetchRecipes = createAsyncThunk(
       return response.data.results.map((item: any) => ({
         id: item.id.toString(),
         title: item.title,
-        image: item.image
+        image: item.image,
+        sourceUrl: item.sourceUrl
       }));
 
     } catch (error: any) {
