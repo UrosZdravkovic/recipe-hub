@@ -1,5 +1,5 @@
 import { ExternalLink, Heart } from 'lucide-react';
-import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "@/components/ui/drawer";
+import { Drawer, DrawerTrigger, DrawerContent } from "@/components/ui/drawer";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
 function capitalize(str: string) {
