@@ -15,7 +15,7 @@ export default function IngredientsList() {
   };
 
   return (
-    <div className="w-full pt-6 pb-6 overflow-y-auto space-y-2 pr-3.5 pl-6 bg-white rounded-3xl scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-50">
+    <div className="w-full pt-6 pb-6 overflow-y-auto space-y-2 pr-3.5 pl-3.5 bg-white rounded-3xl scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-50">
       {defaultIngredients.map((cat) => {
         const selectedCount = cat.ingredients.filter(ing =>
           selectedIngredients.some(sel => sel.id === ing.id)
@@ -28,21 +28,19 @@ export default function IngredientsList() {
 
         return (
           <div key={cat.category} className="mb-4 shadow-sm bg-white rounded-xl p-4 border-1 border-amber-100 max-[1200px]:p-2">
-            <div className="flex items-center w-full font-semibold text-base mb-1 px-3 py-2">
-              <div className="flex flex-col items-start gap-1 w-full">
-                <span className="text-left w-full">{cat.category}</span>
-                <span
-                  className="text-xs text-gray-400 cursor-pointer relative pb-1
-                    hover:text-orange-500 transition-colors duration-300
-                    after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5
-                    after:bg-orange-400 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
-                  onClick={() => toggle(cat.category)}
-                >
-                  {open[cat.category] ? "Show less" : "Show more"}
-                </span>
+            <div className="flex flex-col  items-start w-full font-semibold text-base mb-1 px-3 py-2">
+              <div className="flex flex-row items-center justify-between w-full">
+                <span className="text-left">{cat.category}</span>
+                <span className="text-lg text-gray-500">{selectedCount}/{totalCount}</span>
               </div>
-              <span className="ml-auto text-lg text-gray-500">
-                {selectedCount}/{totalCount}
+              <span
+                className="text-xs  text-gray-400 cursor-pointer relative pb-1 mt-1
+                  hover:text-orange-500 transition-colors duration-300
+                  after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5
+                  after:bg-orange-400 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+                onClick={() => toggle(cat.category)}
+              >
+                {open[cat.category] ? "Show less" : "Show more"}
               </span>
             </div>
             <div

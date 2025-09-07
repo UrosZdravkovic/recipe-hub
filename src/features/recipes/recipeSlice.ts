@@ -8,6 +8,8 @@ export type Recipe = {
   title: string;
   image: string;
   sourceUrl: string;
+  ingredients: string[];
+  instructions: string;
 };
 
 type RecipeState = {
@@ -20,6 +22,7 @@ const initialState: RecipeState = {
   recipes: [],
   loading: false,
   error: null,
+  
 };
 
 // Thunk to fetch recipes from Spoonacular
@@ -34,6 +37,7 @@ export const fetchRecipes = createAsyncThunk(
         params: {
           apiKey,
           addRecipeInformation: true,
+          fillIngredients: true,
           number: number ?? 10, // default to 10 if not provided
           ...(ingredients.length > 1
             ? { includeIngredients: ingredients.join(",") }
@@ -47,7 +51,9 @@ export const fetchRecipes = createAsyncThunk(
         id: item.id.toString(),
         title: item.title,
         image: item.image,
-        sourceUrl: item.sourceUrl
+        sourceUrl: item.sourceUrl,
+        ingredients: item.extendedIngredients?.map((ing: any) => ing.name) ?? [],
+        instructions: item.summary || "No instructions provided."
       }));
 
     } catch (error: any) {
