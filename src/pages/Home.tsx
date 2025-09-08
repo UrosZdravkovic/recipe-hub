@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <div className="w-[75%] overflow-y-auto">
+      <div className="w-[75%] overflow-y-auto p-4 ">
         <RecipeList />
       </div>
     </div>

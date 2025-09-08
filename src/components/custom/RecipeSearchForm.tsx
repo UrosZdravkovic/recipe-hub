@@ -26,7 +26,7 @@ export default function RecipeSearchForm() {
             return;
         }
         
-        dispatch(fetchRecipes({ query: queryString, number: 10 }));
+        dispatch(fetchRecipes({ query: queryString, number: 2 }));
 
 
     };

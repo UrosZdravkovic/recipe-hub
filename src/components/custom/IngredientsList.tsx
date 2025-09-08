@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import { addIngredient, removeIngredient } from "@/features/recipes/ingredientsSlice";
+import BottomHoverWrapper from "../ui/BottomHoverWrapper";
 
 export default function IngredientsList() {
   const dispatch = useAppDispatch();
@@ -27,21 +28,15 @@ export default function IngredientsList() {
           : cat.ingredients.slice(0, 10);
 
         return (
-          <div key={cat.category} className="mb-4 shadow-sm bg-white rounded-xl p-4 border-1 border-amber-100 max-[1200px]:p-2">
+          <div key={cat.category} className="mb-4 shadow-sm bg-white rounded-xl pr-4 border-1 border-amber-100 max-[1200px]:p-2">
             <div className="flex flex-col  items-start w-full font-semibold text-base mb-1 px-3 py-2">
               <div className="flex flex-row items-center justify-between w-full">
                 <span className="text-left">{cat.category}</span>
                 <span className="text-lg text-gray-500">{selectedCount}/{totalCount}</span>
               </div>
-              <span
-                className="text-xs  text-gray-400 cursor-pointer relative pb-1 mt-1
-                  hover:text-orange-500 transition-colors duration-300
-                  after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5
-                  after:bg-orange-400 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
-                onClick={() => toggle(cat.category)}
-              >
+              <BottomHoverWrapper onClick={() => toggle(cat.category)}>
                 {open[cat.category] ? "Show less" : "Show more"}
-              </span>
+              </BottomHoverWrapper>
             </div>
             <div
               className={`transition-all duration-300 overflow-hidden ${open[cat.category] ? "max-h-96 opacity-100" : "max-h-24 opacity-100"}`}

@@ -54,6 +54,7 @@ export const fetchRecipes = createAsyncThunk(
         sourceUrl: item.sourceUrl,
         ingredients: item.extendedIngredients?.map((ing: any) => ing.name) ?? [],
         instructions: item.summary || "No instructions provided."
+
       }));
 
     } catch (error: any) {
