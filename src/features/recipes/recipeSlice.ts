@@ -33,7 +33,7 @@ export const fetchRecipes = createAsyncThunk(
       const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
       const ingredients = query.split(",").map((item) => item.trim());
       
-      const response = await api.get("/recipes/complexSearch", {
+      const response = await api.get("/recipess/complexSearch", {
         params: {
           apiKey,
           addRecipeInformation: true,

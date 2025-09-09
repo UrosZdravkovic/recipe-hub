@@ -10,16 +10,25 @@ import FindYourRecipes from "./FindYourRecipes";
 
 
 export default function RecipeList() {
-  const { recipes, loading } = useAppSelector((state) => state.recipes);
+  const { recipes, loading, error } = useAppSelector((state) => state.recipes);
 
   if (loading) {
     return <CookingLoader />;
   }
 
+  if (error) {
+    return (
+      <div className="text-red-500 text-center mt-4">
+        Error fetching recipes: {error}
+      </div>
+    );
+  } 
+  
   if (recipes.length === 0) {
     return <FindYourRecipes />;
   }
-  console.log(recipes);
+
+  
 
 
   return (
