@@ -39,9 +39,9 @@ export default function IngredientsList() {
               </BottomHoverWrapper>
             </div>
             <div
-              className={`transition-all duration-300 overflow-hidden ${open[cat.category] ? "max-h-96 opacity-100" : "max-h-24 opacity-100"}`}
+              className={`transition-all duration-300 ${open[cat.category] ? "max-h-96 overflow-y-auto opacity-100" : "max-h-24 overflow-y-auto opacity-100"}`}
             >
-              <ul className="flex flex-wrap gap-1 mt-2 mb-2">
+              <ul className="flex flex-wrap gap-1 mt-2 mb-2 pl-2">
                 {visibleIngredients.map((ing) => {
                   const isSelected = selectedIngredients.some((sel) => sel.id === ing.id);
                   return (
