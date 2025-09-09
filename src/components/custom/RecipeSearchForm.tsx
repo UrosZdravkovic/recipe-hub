@@ -12,6 +12,7 @@ export default function RecipeSearchForm() {
     const { selectedIngredients } = useAppSelector(
         (state) => state.ingredients
     );
+    const {loading} = useAppSelector((state) => state.recipes);
     // Ref for the scroll container
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -39,9 +40,9 @@ export default function RecipeSearchForm() {
                     <TooltipTrigger asChild>
                         <Button
                             type="submit"
-                            className="text-lg text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
+                            className="text-lg w-[175px] text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
                         >
-                            Search Recipes
+                            {loading ? "Searching..." : "Search Recipes"}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top" align="center">

@@ -16,13 +16,14 @@ type RecipeState = {
   recipes: Recipe[];
   loading: boolean;
   error: string | null;
+  hasSearched: boolean;
 }
 
 const initialState: RecipeState = {
   recipes: [],
   loading: false,
   error: null,
-  
+  hasSearched: false,
 };
 
 // Thunk to fetch recipes from Spoonacular
@@ -33,7 +34,7 @@ export const fetchRecipes = createAsyncThunk(
       const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
       const ingredients = query.split(",").map((item) => item.trim());
       
-      const response = await api.get("/recipess/complexSearch", {
+      const response = await api.get("/recipes/complexSearch", {
         params: {
           apiKey,
           addRecipeInformation: true,
@@ -80,10 +81,12 @@ const recipeSlice = createSlice({
       .addCase(fetchRecipes.fulfilled, (state, action: PayloadAction<Recipe[]>) => {
         state.recipes = action.payload;
         state.loading = false;
+        state.hasSearched = true;
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.hasSearched = true;
       });
   },
 });

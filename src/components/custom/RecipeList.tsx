@@ -2,7 +2,8 @@ import { useAppSelector } from "@/app/hooks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import RecipeCard from "./RecipeCard";
 import CookingLoader from "./CookingLoader";
-import FindYourRecipes from "./FindYourRecipes";
+import NoRecipesFound from "./NoRecipesFound";
+
 
 
 
@@ -10,7 +11,7 @@ import FindYourRecipes from "./FindYourRecipes";
 
 
 export default function RecipeList() {
-  const { recipes, loading, error } = useAppSelector((state) => state.recipes);
+  const { recipes, loading, error, hasSearched } = useAppSelector((state) => state.recipes);
 
   if (loading) {
     return <CookingLoader />;
@@ -23,12 +24,12 @@ export default function RecipeList() {
       </div>
     );
   } 
-  
-  if (recipes.length === 0) {
-    return <FindYourRecipes />;
-  }
 
-  
+  if (hasSearched && recipes.length === 0) { 
+    return (
+      <NoRecipesFound />
+    );
+  }
 
 
   return (
