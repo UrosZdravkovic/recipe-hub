@@ -12,7 +12,7 @@ export default function RecipeSearchForm() {
     const { selectedIngredients } = useAppSelector(
         (state) => state.ingredients
     );
-    const {loading} = useAppSelector((state) => state.recipes);
+    const { loading } = useAppSelector((state) => state.recipes);
     // Ref for the scroll container
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -26,18 +26,19 @@ export default function RecipeSearchForm() {
             setTimeout(() => setShowTooltip(false), 2000); // Hide after 2s
             return;
         }
-        
-        dispatch(fetchRecipes({ query: queryString, number: 2 }));
+
+        dispatch(fetchRecipes({ query: queryString, number: 3 }));
 
 
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 p-4">
+        <form onSubmit={handleSubmit} className="space-y-3 p-4">
             <IngredientInput />
             <TooltipProvider>
                 <Tooltip open={showTooltip}>
                     <TooltipTrigger asChild>
+
                         <Button
                             type="submit"
                             className="text-lg w-[175px] text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"

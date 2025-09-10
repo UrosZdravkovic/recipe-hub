@@ -30,7 +30,7 @@ export default function IngredientsList() {
         return (
           <div key={cat.category} className="mb-4 shadow-sm bg-white rounded-xl pr-4 border-1 border-amber-100 max-[1200px]:p-2">
             <div className="flex flex-col  items-start w-full font-semibold text-base mb-1 px-3 py-2">
-              <div className="flex flex-row items-center justify-between w-full">
+              <div className="flex flex-row items-center justify-between w-full max-[800px]:flex-col max-[800px]:items-start">
                 <span className="text-left">{cat.category}</span>
                 <span className="text-lg text-gray-500">{selectedCount}/{totalCount}</span>
               </div>

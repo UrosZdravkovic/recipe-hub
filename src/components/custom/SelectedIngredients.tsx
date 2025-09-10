@@ -18,13 +18,13 @@ export default function SelectedIngredients() {
     }, [selectedIngredients]);
 
     return (
-        <div className="h-24 flex flex-col justify-end pl-4">
+        <div className="h-24 flex flex-col justify-end p-4 pl-6">
             <div
                 ref={badgeScrollRef}
-                className="overflow-y-auto flex flex-row flex-wrap items-center gap-3 w-full"
+                className="overflow-y-auto flex flex-row flex-wrap items-center gap-1 w-full"
             >
                 {selectedIngredients.length === 0 && (
-                    <span className="block w-full text-lg text-gray-400 italic mb-2 text-center">
+                    <span className="block w-full text-lg text-gray-400 italic mb-1 text-left">
                         No ingredients selected
                     </span>
                 )}
@@ -32,7 +32,7 @@ export default function SelectedIngredients() {
                     <Badge
                         key={ing.id}
                         variant="secondary"
-                        className="cursor-pointer text-xs px-3 py-2 bg-orange-400 text-white hover:bg-orange-600 hover:cursor-pointer transition-all duration-300"
+                        className="cursor-pointer text-xs px-2 py-2 bg-orange-400 text-white hover:bg-orange-600 hover:cursor-pointer transition-all duration-300"
                         onClick={() => dispatch(removeIngredient(ing.id))}
                     >
                         {ing.name} ✕

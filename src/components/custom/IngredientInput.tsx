@@ -53,10 +53,9 @@ export default function IngredientInput() {
         <Command ref={commandRef} className="w-full max-w-md border rounded-lg p-2 bg-white">
             <div>
                 <CommandInput
-                    placeholder="Find ingredients..."
+                    placeholder="Search our ingredients list..."
                     value={query}
                     onValueChange={val => {
-                        // If query was empty and now has a value, set loading to true
                         setQuery(val);
                         setIsOpen(val.length > 0);
 
