@@ -16,7 +16,7 @@ export default function IngredientsList() {
   };
 
   return (
-    <div className="w-full pt-6 pb-6 overflow-y-auto space-y-2 pr-3.5 pl-3.5 bg-white rounded-3xl scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-50">
+    <div className="w-full pt-6 pb-6 overflow-y-auto space-y-2 bg-orange-50 rounded-3xl scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-50">
       {defaultIngredients.map((cat) => {
         const selectedCount = cat.ingredients.filter(ing =>
           selectedIngredients.some(sel => sel.id === ing.id)

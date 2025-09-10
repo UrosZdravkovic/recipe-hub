@@ -33,7 +33,7 @@ export default function RecipeSearchForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-3 p-4">
+        <form onSubmit={handleSubmit} className="bg-orange-50">
             <IngredientInput />
             <TooltipProvider>
                 <Tooltip open={showTooltip}>
@@ -41,7 +41,7 @@ export default function RecipeSearchForm() {
 
                         <Button
                             type="submit"
-                            className="text-lg w-[175px] text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
+                            className="text-lg w-[175px] mt-6 text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
                         >
                             {loading ? "Searching..." : "Search Recipes"}
                         </Button>

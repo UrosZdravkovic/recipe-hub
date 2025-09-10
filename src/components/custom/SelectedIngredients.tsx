@@ -18,7 +18,7 @@ export default function SelectedIngredients() {
     }, [selectedIngredients]);
 
     return (
-        <div className="h-24 flex flex-col justify-end p-4 pl-6">
+        <div className="h-24 flex flex-col justify-end pb-2 pt-2">
             <div
                 ref={badgeScrollRef}
                 className="overflow-y-auto flex flex-row flex-wrap items-center gap-1 w-full"
