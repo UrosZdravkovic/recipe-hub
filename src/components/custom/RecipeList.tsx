@@ -10,7 +10,7 @@ import NoRecipesFound from "./NoRecipesFound";
 
 
 
-export default function RecipeList() {
+export default function RecipeList({collapsed}: {collapsed: boolean}) {
   const { recipes, loading, error, hasSearched } = useAppSelector((state) => state.recipes);
 
   if (loading) {
@@ -33,7 +33,7 @@ export default function RecipeList() {
 
 
   return (
-    <div className="grid grid-cols-2 gap-3 max-[1200px]:grid-cols-1">
+    <div className={`grid gap-3 max-[1200px]:grid-cols-1 ${collapsed ? 'grid-cols-3' : 'grid-cols-2'}`}>
       {recipes.map((recipe: Recipe) => (
         <RecipeCard key={recipe.id} recipe={recipe} />
       ))}     

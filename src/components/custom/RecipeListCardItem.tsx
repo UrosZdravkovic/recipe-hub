@@ -9,11 +9,11 @@ const RecipeListCardItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes
       {...props}
       className={`flex items-center gap-6 p-5 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow min-h-[120px] cursor-pointer ${props.className ?? ""}`}
     >
-      <div className="relative w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 ">
+      <div className="rounded-xl overflow-hidden bg-gray-100 ">
         <img
           src={recipe.image}
           alt={recipe.title}
-          className="object-cover w-full h-full"
+          className="object-cover w-32 h-32"
         />
       </div>
       <div className="flex-1 flex flex-col justify-between h-full">

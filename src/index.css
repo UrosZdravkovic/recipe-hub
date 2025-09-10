@@ -110,6 +110,28 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* WebKit scrollbars: Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fb923c; /* orange-400 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fb923c transparent;
+}
+
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
