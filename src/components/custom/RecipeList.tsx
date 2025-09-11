@@ -10,8 +10,10 @@ import NoRecipesFound from "./NoRecipesFound";
 
 
 
-export default function RecipeList({collapsed}: {collapsed: boolean}) {
+export default function RecipeList({ collapsed }: { collapsed: boolean }) {
   const { recipes, loading, error, hasSearched } = useAppSelector((state) => state.recipes);
+
+
 
   if (loading) {
     return <CookingLoader />;
@@ -23,9 +25,9 @@ export default function RecipeList({collapsed}: {collapsed: boolean}) {
         Error fetching recipes: {error}
       </div>
     );
-  } 
+  }
 
-  if (hasSearched && recipes.length === 0) { 
+  if (hasSearched && recipes.length === 0) {
     return (
       <NoRecipesFound />
     );
@@ -33,10 +35,12 @@ export default function RecipeList({collapsed}: {collapsed: boolean}) {
 
 
   return (
-    <div className={`grid gap-3 max-[1200px]:grid-cols-1 ${collapsed ? 'grid-cols-3' : 'grid-cols-2'}`}>
+    <div className={`grid gap-3  ${collapsed
+      ? "grid-cols-1 [@media(min-width:850px)]:grid-cols-2 [@media(min-width:1000px)]:grid-cols-3"
+      : "grid-cols-3"}`}>
       {recipes.map((recipe: Recipe) => (
         <RecipeCard key={recipe.id} recipe={recipe} />
-      ))}     
+      ))}
     </div>
   );
 }

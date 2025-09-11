@@ -14,10 +14,8 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
             <button
                 onClick={setCollapsed}
                 className={`fixed  transition-all duration-300 ease-in-out rounded-r-3xl cursor-pointer
-     w-3 flex items-center justify-center
-    bg-orange-300 text-white hover:bg-orange-200
-    ${collapsed ? "left-0 h-[50%] top-2" : "left-[350px] top-2 h-[40px]"}`}
-            >
+                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "left-0 h-[50%] top-2" : "left-[350px] top-2 h-[40px]"}`}
+                >
                 {collapsed ? (
                     <ChevronRight className="w-5 h-5" />
                 ) : (
