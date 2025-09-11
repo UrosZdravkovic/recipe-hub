@@ -10,16 +10,16 @@ type SidebarProps = {
 
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     return (
-        <div className={`min-w-[300px] bg-orange-50 p-4 relative`}>
+        <div className={` bg-orange-50 p-4 relative`}>
             <button
                 onClick={setCollapsed}
                 className={`fixed  transition-all duration-300 ease-in-out rounded-r-3xl cursor-pointer
-                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "left-0 h-[50%] top-2" : "left-[350px] top-2 h-[40px]"}`}
+                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "left-0 h-[50%] top-2" : "[@media(max-width:500px)]:left-[0px] left-[350px] top-2 h-[40px]"}`}
                 >
                 {collapsed ? (
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-3 h-3" />
                 ) : (
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-3 h-3" />
                 )}
             </button>
 
