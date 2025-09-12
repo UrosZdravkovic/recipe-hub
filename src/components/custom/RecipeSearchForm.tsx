@@ -5,8 +5,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Button } from "../ui/button";
 import { fetchRecipes } from "@/features/recipes/recipeSlice";
 
+type RecipeSearchFormProps = {
+    handleCollapse: () => void;
+};
 
-export default function RecipeSearchForm() {
+export default function RecipeSearchForm({ handleCollapse }: RecipeSearchFormProps) {
 
     const dispatch = useAppDispatch();
     const { selectedIngredients } = useAppSelector(
@@ -28,7 +31,10 @@ export default function RecipeSearchForm() {
         }
 
         dispatch(fetchRecipes({ query: queryString, number: 3 }));
-
+        if (window.innerWidth < 750) {
+            handleCollapse();
+        }
+        
 
     };
 

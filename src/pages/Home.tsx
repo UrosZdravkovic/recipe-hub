@@ -10,6 +10,7 @@ export default function Home() {
 
   function handleCollapse() {
     setCollapsed(c => !c);
+    console.log(collapsed);
   }
 
   const showOverlay = !collapsed; // prikaz samo kad je otvoren
@@ -27,7 +28,7 @@ export default function Home() {
 
       {/* Sidebar */}
       <div
-        className={`relative z-40 max-w-[350px] transition-all duration-300 ease-in-out overflow-y-scroll
+        className={`relative z-40 min-w-[350px] transition-all duration-300 ease-in-out overflow-y-scroll
         [@media(max-width:750px)]:absolute [@media(max-width:500px)]:max-w-[300px]
         ${collapsed ? "ml-[-350px]" : "ml-0"}`}
       >
