@@ -21,11 +21,11 @@ export default function SelectedIngredients() {
         <div className="flex justify-center h-14 border-1 border-amber-200 p-2 pr-0.5 mb-2 rounded-xl bg-white shadow-sm">
             <div
                 ref={badgeScrollRef}
-                className="overflow-y-auto flex flex-row flex-wrap items-center gap-1 w-full"
+                className="overflow-y-auto pr-2 pl-2 flex flex-row flex-wrap items-center gap-1 w-full"
             >
                 {selectedIngredients.length === 0 && (
-                    <span className="block w-full text-lg text-gray-400 italic mb-1 text-left">
-                        No ingredients selected
+                    <span className="block w-full text-[16px] text-gray-400 italic text-left">
+                        No ingredients selected...
                     </span>
                 )}
                 {selectedIngredients.map((ing) => (

@@ -39,7 +39,7 @@ export default function RecipeSearchForm({ handleCollapse }: RecipeSearchFormPro
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-orange-50">
+        <form onSubmit={handleSubmit} className="flex">
             <IngredientInput />
             <TooltipProvider>
                 <Tooltip open={showTooltip}>
@@ -47,9 +47,9 @@ export default function RecipeSearchForm({ handleCollapse }: RecipeSearchFormPro
 
                         <Button
                             type="submit"
-                            className="text-lg w-[175px] mt-2 text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
+                            className="w-[25%] text-white bg-orange-500 border-l-0 rounded-l-none rounded-r-lg hover:bg-orange-600 hover:cursor-pointer transition-all duration-300"
                         >
-                            {loading ? "Searching..." : "Search Recipes"}
+                            <span>{loading ? ".." : "f"}</span>
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top" align="center">
