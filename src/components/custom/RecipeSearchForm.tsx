@@ -47,7 +47,7 @@ export default function RecipeSearchForm({ handleCollapse }: RecipeSearchFormPro
 
                         <Button
                             type="submit"
-                            className="text-lg w-[175px] mt-6 text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
+                            className="text-lg w-[175px] mt-2 text-white bg-orange-500 border-0 hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 rounded-lg py-3"
                         >
                             {loading ? "Searching..." : "Search Recipes"}
                         </Button>

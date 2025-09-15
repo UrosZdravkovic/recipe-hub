@@ -7,9 +7,9 @@ const RecipeListCardItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes
     <div
       ref={ref}
       {...props}
-      className={`flex items-center gap-6 p-5 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow min-h-[120px] cursor-pointer ${props.className ?? ""}`}
+      className={`flex items-center gap-6 p-5 bg-white rounded-2xl shadow-md max-[500px]:p-3 hover:shadow-lg transition-shadow min-h-[120px] cursor-pointer ${props.className ?? ""}`}
     >
-      <div className="rounded-xl min-h-40 min-w-40 overflow-hidden bg-gray-100 w-40 h-40">
+      <div className="rounded-xl flex items-center justify-center overflow-hidden bg-gray-100 w-40 h-40 min-h-40 min-w-40 max-[500px]:w-24 max-[500px]:h-24 max-[500px]:min-h-24 max-[500px]:min-w-24 flex-shrink-0">
         <img
           src={recipe.image}
           alt={recipe.title}
@@ -18,10 +18,10 @@ const RecipeListCardItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes
       </div>
       <div className="flex-1 flex flex-col justify-between h-full">
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-1 line-clamp-2">{recipe.title}</h3>
+          <h3 className="text-xl max-[500px]:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">{recipe.title}</h3>
           <ul className="flex flex-wrap gap-1 mt-1">
             {recipe.ingredients.slice(0, 3).map((ingredient, idx) => (
-              <li key={idx} className="bg-gray-100 rounded px-2 py-1 text-xs text-gray-700">
+              <li key={idx} className="bg-gray-100 rounded px-2 py-1 text-xs max-[500px]:text-[10px] text-gray-700">
                 {ingredient}
               </li>
             ))}
