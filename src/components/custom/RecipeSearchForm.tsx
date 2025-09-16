@@ -4,6 +4,9 @@ import IngredientInput from "./IngredientInput";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "../ui/button";
 import { fetchRecipes } from "@/features/recipes/recipeSlice";
+import { CiSearch } from "react-icons/ci";
+import { Loader2 } from "lucide-react";
+
 
 type RecipeSearchFormProps = {
     handleCollapse: () => void;
@@ -34,29 +37,44 @@ export default function RecipeSearchForm({ handleCollapse }: RecipeSearchFormPro
         if (window.innerWidth < 750) {
             handleCollapse();
         }
-        
+
 
     };
 
     return (
         <form onSubmit={handleSubmit} className="flex">
             <IngredientInput />
+
             <TooltipProvider>
                 <Tooltip open={showTooltip}>
                     <TooltipTrigger asChild>
-
                         <Button
                             type="submit"
-                            className="w-[25%] text-white bg-orange-500 border-l-0 rounded-l-none rounded-r-lg hover:bg-orange-600 hover:cursor-pointer transition-all duration-300"
+                            className="w-[25%] h-[52px] text-white bg-orange-500 border-l-0 rounded-l-none rounded-r-lg hover:bg-orange-600 hover:cursor-pointer transition-all duration-300 flex items-center justify-center"
                         >
-                            <span>{loading ? ".." : "f"}</span>
+                            <span>
+                                {loading ? (
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                ) : (
+                                    <CiSearch className="stroke-[1.5]" />
+                                )}
+                            </span>
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="top" align="center">
-                        Please add ingredients before searching!
+
+                    {/* Add TooltipContent as a sibling to TooltipTrigger inside Tooltip */}
+                    <TooltipContent
+                        side="top"
+                        align="center"
+                        sideOffset={8}
+                        className="text-sm font-medium"
+                    >
+                        Please add at least one ingredient.
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
+
         </form>
     )
 }
+

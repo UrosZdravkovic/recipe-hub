@@ -51,7 +51,7 @@ export default function IngredientInput() {
 
     return (
         <Command ref={commandRef} className="max-w-md rounded-r-none rounded-l-lg bg-white">
-            <div>
+            <div className="p-2">
                 <CommandInput
                     placeholder="Search our ingredients list..."
                     value={query}
