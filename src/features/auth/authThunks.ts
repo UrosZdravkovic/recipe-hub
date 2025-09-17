@@ -9,7 +9,7 @@ import {
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
 // Signup
-export const signup = createAsyncThunk(
+export const signUpUserThunk = createAsyncThunk(
   "auth/signup",
   async ({ email, password, username }: { email: string; password: string; username: string }) => {
     const user = await signUpUser(email, password);
@@ -19,7 +19,7 @@ export const signup = createAsyncThunk(
 );
 
 // Login
-export const login = createAsyncThunk(
+export const loginUserThunk = createAsyncThunk(
   "auth/login",
   async ({ email, password }: { email: string; password: string }) => {
     return await loginUser(email, password);
@@ -27,12 +27,12 @@ export const login = createAsyncThunk(
 );
 
 // Logout
-export const logout = createAsyncThunk("auth/logout", async () => {
+export const logoutUserThunk = createAsyncThunk("auth/logout", async () => {
   return await logoutUser();
 });
 
 // Add Favourite
-export const addFavouritesRecipe = createAsyncThunk(
+export const addFavouritesThunk = createAsyncThunk(
   "auth/addFavourite",
   async ({ userId, recipe }: { userId: string; recipe: Recipe }) => {
     return await addFavourites(userId, recipe);

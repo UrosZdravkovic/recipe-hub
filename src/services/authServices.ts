@@ -13,7 +13,7 @@ export async function signUpUser(email: string, password: string) {
 
 export async function createProfile(id: string, username: string) {
   const { data, error } = await supabase
-    .from("profiles")
+    .from("Profile")
     .insert({ id, username })
     .select()
     .single();
@@ -31,7 +31,7 @@ export async function loginUser(email: string, password: string) {
 
   // Dohvati profil iz profiles tabele
   const profileData = await supabase
-    .from("profiles")
+    .from("Profile")
     .select("*")
     .eq("id", data.user.id)
     .single();
@@ -64,7 +64,7 @@ export async function addFavourites(userId: string, recipe: Recipe) {
     const updatedFavourites = [...existingFavourites, recipe];
 
     const { error: updateError } = await supabase
-    .from("profiles")
+    .from("Profile")
     .update({ favourites: updatedFavourites })
     .eq("id", userId);
 

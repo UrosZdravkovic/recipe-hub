@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/app/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/hooks/hooks";
 import { removeIngredient, clearSelectedIngredients } from "@/features/recipes/ingredientsSlice";
 import { Badge } from "@/components/ui/badge";
 

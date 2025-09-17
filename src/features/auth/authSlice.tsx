@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  signup,
-  login,
-  logout,
-  addFavouritesRecipe,
+  signUpUserThunk,
+  loginUserThunk,
+  logoutUserThunk,
+  addFavouritesThunk,
 } from "./authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -34,46 +34,46 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // signup
-      .addCase(signup.pending, (state) => {
+      .addCase(signUpUserThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(signup.fulfilled, (state, action) => {
+      .addCase(signUpUserThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.profile = action.payload.profile;
       })
-      .addCase(signup.rejected, (state, action) => {
+      .addCase(signUpUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Signup failed";
       });
 
     // login
     builder
-      .addCase(login.pending, (state) => {
+      .addCase(loginUserThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(loginUserThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.profile = action.payload.profile;
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(loginUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Login failed";
       });
 
     // logout
     builder
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logoutUserThunk.fulfilled, (state) => {
         state.user = null;
         state.profile = null;
       });
 
     // add favourite
     builder
-      .addCase(addFavouritesRecipe.fulfilled, (state, action) => {
+      .addCase(addFavouritesThunk.fulfilled, (state, action) => {
         if (state.profile) {
           state.profile.favourites = action.payload;
         }

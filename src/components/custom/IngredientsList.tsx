@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/app/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/hooks/hooks";
 import { addIngredient, removeIngredient } from "@/features/recipes/ingredientsSlice";
 import BottomHoverWrapper from "../ui/BottomHoverWrapper";
 
