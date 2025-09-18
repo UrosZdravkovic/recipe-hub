@@ -3,10 +3,17 @@ import { supabase } from "./supabaseClient";
 
 
 // SIGNUP sa email i password
-export async function signUpUser(email: string, password: string) {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-    return data.user;
+export async function signUpUser(email: string, password: string, username: string) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { username }
+    }
+  });
+
+  if (error) throw error;
+  return data.user;
 }
 
 // Profile kreiranje
@@ -18,28 +25,38 @@ export async function createProfile(id: string, username: string) {
     .select()
     .single();
 
+
   if (error) throw error;
   return data;
 }
 
-
-// Login sa email i password
+// Login sa email i password, i kreiranje profila ako ne postoji
 export async function loginUser(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) throw error;
   if (!data.user) throw new Error("Login failed");
 
-  // Dohvati profil iz profiles tabele
-  const profileData = await supabase
+  const user = data.user;
+
+  // Pokušaj da dohvatimo profil
+  let profileData;
+  const { data: profile, error: selectError } = await supabase
     .from("Profile")
     .select("*")
-    .eq("id", data.user.id)
+    .eq("id", user.id)
     .single();
+    console.log(typeof user.id, user);
 
-  if (profileData.error) throw profileData.error;
+  if (selectError) {
+    // Ako profil ne postoji, kreiraj ga
+    profileData = await createProfile(user.id, user.user_metadata.username || "");
+  } else {
+    profileData = profile;
+  }
 
-  return { user: data.user, profile: profileData.data };
+  return { user, profile: profileData };
 }
+
 
 // Logout usera
 export async function logoutUser() {
@@ -52,22 +69,22 @@ export async function logoutUser() {
 
 // Dodavanje u favourites
 export async function addFavourites(userId: string, recipe: Recipe) {
-    const { data, error } = await supabase
+  const { data, error } = await supabase
     .from("Profile")
     .select("favourites")
     .eq("id", userId)
     .single();
-    
-    if (error) throw error;
 
-    const existingFavourites = data.favourites || [];
-    const updatedFavourites = [...existingFavourites, recipe];
+  if (error) throw error;
 
-    const { error: updateError } = await supabase
+  const existingFavourites = data.favourites || [];
+  const updatedFavourites = [...existingFavourites, recipe];
+
+  const { error: updateError } = await supabase
     .from("Profile")
     .update({ favourites: updatedFavourites })
     .eq("id", userId);
 
-    if (updateError) throw updateError;
-    return updatedFavourites;
+  if (updateError) throw updateError;
+  return updatedFavourites;
 }

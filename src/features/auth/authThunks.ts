@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   signUpUser,
-  createProfile,
   loginUser,
   logoutUser,
   addFavourites,
@@ -12,9 +11,8 @@ import type { Recipe } from "@/features/recipes/recipeSlice";
 export const signUpUserThunk = createAsyncThunk(
   "auth/signup",
   async ({ email, password, username }: { email: string; password: string; username: string }) => {
-    const user = await signUpUser(email, password);
-    const profile = await createProfile(user!.id, username);
-    return { user, profile };
+    const user = await signUpUser(email, password, username);
+    return { user };
   }
 );
 

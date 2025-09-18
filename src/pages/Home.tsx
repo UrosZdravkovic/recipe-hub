@@ -8,20 +8,19 @@ import { useAuth } from "@/app/hooks/useAuth";
 
 
 
+
 export default function Home() {
-  const {signup } = useAuth();
+  const {signup, login } = useAuth();
   const { hasSearched, loading, recipes } = useAppSelector((state) => state.recipes);
   const [collapsed, setCollapsed] = useState(false);
 
   function handleCollapse() {
     setCollapsed(c => !c);
-    signup({email: "uzdravkovic0@gmail.com", password: "passw12D!ord", username: "testuser" });
-
+    signup({email: "uzdravkovic0@gmail.com", password: "passw12D!ord", username: "uzdravkovic0"});
+    setTimeout(() => login({email: "uzdravkovic0@gmail.com", password: "passw12D!ord"}), 10000);
   }
 
   const showOverlay = !collapsed; // prikaz samo kad je otvoren
-
-
 
 
   return (
