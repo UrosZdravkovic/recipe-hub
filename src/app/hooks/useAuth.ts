@@ -14,7 +14,7 @@ export function useAuth() {
   );
 
   // Auth akcije sa payload-om kao objekat
-  const signup = (payload: { email: string; password: string; username: string }) =>
+  const signup = (payload: { email: string; password: string }) =>
     dispatch(signUpUserThunk(payload));
 
   const login = (payload: { email: string; password: string }) =>

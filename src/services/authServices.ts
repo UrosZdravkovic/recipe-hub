@@ -2,16 +2,24 @@ import type { Recipe } from "@/features/recipes/recipeSlice";
 import { supabase } from "./supabaseClient";
 
 // SIGNUP sa email i password
-export async function signUpUser(email: string, password: string, username: string) {
+export async function signUpUser(email: string, password: string) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: { username }, // ovo ide u raw_user_meta_data
-    },
   });
   if (error) throw error;
-  return data.user;
+
+  const user = data.user;
+
+  if (!user) throw new Error("Signup failed");
+
+  const { data: profile, error: selectError } = await supabase
+    .from("profiles")
+    .insert({ userId: user.id }) // ovde koristiš userId
+
+  if (selectError) throw selectError;
+
+  return { user, profile };
 }
 
 // LOGIN sa email i password
@@ -22,20 +30,11 @@ export async function loginUser(email: string, password: string) {
   });
 
   if (error) throw error;
+
   if (!data.user) throw new Error("Login failed");
-
-  const user = data.user;
-
-  // Samo pokupi profil (jer ga trigger pravi)
-  const { data: profile, error: selectError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("userId", user.id) // ovde koristiš userId
-    .single();
-
-  if (selectError) throw selectError;
-
-  return { user, profile };
+  const user = data.user
+  return user;
+  
 }
 
 // LOGOUT usera

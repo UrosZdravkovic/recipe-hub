@@ -55,8 +55,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUserThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
-        state.profile = action.payload.profile;
+        state.user = action.payload;
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
         state.loading = false;
