@@ -6,27 +6,22 @@ export async function signUpUser(email: string, password: string, username: stri
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: { username },
-    },
   });
   if (error) throw error;
 
   const user = data.user;
-  console.log("Signed up user:", username);
 
   if (!user) throw new Error("Signup failed");
 
-  const { data: profile, error: selectError } = await supabase
-    .from("profiles")
-    .insert({
-      userId: user.id,
-      username,
-    });
+  const { error: profileError } = await supabase.from("profiles").insert({
+    userId: user.id,
+    username: username,
+    favourites: [],
+  });
 
-  if (selectError) throw selectError;
+  if (profileError) throw profileError;
 
-  return { user, profile };
+  return { user };
 }
 
 // LOGIN sa email i password

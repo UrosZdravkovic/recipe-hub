@@ -16,7 +16,7 @@ export default function Home() {
 
   function handleCollapse() {
     setCollapsed(c => !c);
-    signup({email: "uzdravkovic0@gmail.com", password: "passw12D!ord", username: "uroszdravkovic"});
+    signup({email: "uzdravkovic0@gmail.com", password: "passw12D!ord", username: "uzdravkovic"});
   }
 
   const showOverlay = !collapsed; // prikaz samo kad je otvoren
