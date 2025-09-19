@@ -10,8 +10,8 @@ import type { Recipe } from "@/features/recipes/recipeSlice";
 // Signup
 export const signUpUserThunk = createAsyncThunk(
   "auth/signup",
-  async ({ email, password }: { email: string; password: string }) => {
-    const user = await signUpUser(email, password);
+  async ({ email, password, username }: { email: string; password: string; username: string }) => {
+    const user = await signUpUser(email, password, username);
     return { user };
   }
 );
