@@ -1,6 +1,6 @@
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import { ExternalLink } from "lucide-react";
-import BottomHoverWrapper from "../ui/BottomHoverWrapper";
+import BottomHoverWrapper from "../../ui/BottomHoverWrapper";
 import { capitalize } from "./RecipeCard";
 import { useState } from "react";
 

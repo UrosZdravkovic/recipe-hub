@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/app/hooks/hooks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import RecipeCard from "./RecipeCard";
-import CookingLoader from "./CookingLoader";
+import CookingLoader from "@/components/ui/CookingLoader";
 import NoRecipesFound from "./NoRecipesFound";
 
 

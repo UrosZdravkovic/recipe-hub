@@ -2,7 +2,7 @@ import SelectedIngredients from "./SelectedIngredients"
 import RecipeSearchForm from "./RecipeSearchForm"
 import IngredientsList from "./IngredientsList"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
-import ProfileControls from "./ProfileControls"
+import ProfileControls from "../user-data/ProfileControls"
 
 type SidebarProps = {
     collapsed: boolean,
@@ -12,14 +12,7 @@ type SidebarProps = {
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     return (
         <div className={` bg-orange-50 w-[350px] p-4 relative`}>
-            <ProfileControls
-            onShowFavorites={() => {
-              // TODO: Ovde poveži sa prikazom omiljenih recepata (drawer, filter, ruta...)
-              // npr. navigate("/favorites") ili otvori modal/drawer
-              // Ako želiš, mogu dodati i Redux slice za favourites.
-            }}
-            favouritesCount={0}
-          />
+            <ProfileControls />
             <button
                 onClick={setCollapsed}
                 className={`fixed transition-all duration-300 ease-in-out rounded-r-3xl cursor-pointer

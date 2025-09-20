@@ -1,22 +1,21 @@
 import { useState } from "react";
-import RecipeList from "@/components/custom/RecipeList";
-import Sidebar from "@/components/custom/Sidebar";
+import RecipeList from "@/components/custom/recipe-data/RecipeList";
+import Sidebar from "@/components/custom/sidebar/Sidebar";
 import { useAppSelector } from "@/app/hooks/hooks";
-import FindYourRecipes from "@/components/custom/FindYourRecipes";
-import { useAuth } from "@/app/hooks/useAuth";
+import FindYourRecipes from "@/components/custom/recipe-data/FindYourRecipes";
+
 
 
 
 
 
 export default function Home() {
-  const {signup} = useAuth();
   const { hasSearched, loading, recipes } = useAppSelector((state) => state.recipes);
   const [collapsed, setCollapsed] = useState(false);
 
   function handleCollapse() {
     setCollapsed(c => !c);
-    signup({email: "uzdravkovic0@gmail.com", password: "passw12D!ord", username: "uzdravkovic"});
+    
   }
 
   const showOverlay = !collapsed; // prikaz samo kad je otvoren

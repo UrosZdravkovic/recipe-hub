@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import IngredientInput from "./IngredientInput";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { fetchRecipes } from "@/features/recipes/recipeSlice";
 import { CiSearch } from "react-icons/ci";
 import { Loader2 } from "lucide-react";

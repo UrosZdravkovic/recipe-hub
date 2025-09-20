@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks/hooks";
-import { addIngredient, removeIngredient, type Ingredient } from "../../features/recipes/ingredientsSlice";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks/hooks";
+import { addIngredient, removeIngredient, type Ingredient } from "../../../features/recipes/ingredientsSlice";
 import { Command, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
 
 
