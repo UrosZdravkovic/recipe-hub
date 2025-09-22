@@ -7,7 +7,9 @@ export async function signUpUser(email: string, password: string, username: stri
     email,
     password,
   });
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   const user = data.user;
 

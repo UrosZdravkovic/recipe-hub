@@ -17,7 +17,7 @@ export default function SignUp() {
     watch,
     formState: { errors, isSubmitting, isSubmitted, dirtyFields }
   } = useForm<SignUpFormValues>({
-    mode: "onSubmit",        // Validacija (greške) tek na submit
+    mode: "onSubmit",        
     reValidateMode: "onSubmit",
     defaultValues: { email: "", username: "", password: "", confirmPassword: "" }
   });
@@ -44,9 +44,8 @@ export default function SignUp() {
       });
       navigate("/");
 
-       // Uspešan signup, preusmeri na home
     } catch (error) {
-      console.error("Signup error:", error);
+      
       // Ovde možeš dodati prikaz greške korisniku ako želiš
     }
   }

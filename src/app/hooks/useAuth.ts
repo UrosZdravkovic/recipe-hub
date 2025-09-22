@@ -23,11 +23,13 @@ export function useAuth() {
   }, [user, profile, dispatch]);
 
   // akcije
-  const signup = (payload: { email: string; password: string; username: string }) =>
-    dispatch(signUpUserThunk(payload));
+  async function signup(payload: { email: string; password: string; username: string }) {
+    return await dispatch(signUpUserThunk(payload)).unwrap();
+  }
 
-  const login = (payload: { email: string; password: string }) =>
-    dispatch(loginUserThunk(payload));
+  async function login(payload: { email: string; password: string }) {
+    return await dispatch(loginUserThunk(payload)).unwrap();
+  }
 
   const logout = () => dispatch(logoutUserThunk());
 
