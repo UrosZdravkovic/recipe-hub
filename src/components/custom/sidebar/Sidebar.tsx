@@ -2,7 +2,7 @@ import SelectedIngredients from "./SelectedIngredients"
 import RecipeSearchForm from "./RecipeSearchForm"
 import IngredientsList from "./IngredientsList"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
-import ProfileControls from "../user-data/ProfileControls"
+import ProfileControls from "./ProfileControls"
 
 type SidebarProps = {
     collapsed: boolean,

@@ -1,5 +1,5 @@
-import NotSignedIn from "./NotSignedIn";
-import UserSignedIn from "./UserSignedIn";
+import NotSignedIn from "../user-data/NotSignedIn";
+import UserSignedIn from "../user-data/UserSignedIn";
 import { useAuth } from "@/app/hooks/useAuth";
 
 
