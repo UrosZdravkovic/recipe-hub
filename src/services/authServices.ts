@@ -21,7 +21,7 @@ export async function signUpUser(email: string, password: string, username: stri
 
   if (profileError) throw profileError;
 
-  return { user };
+  return user;
 }
 
 // LOGIN sa email i password
@@ -66,4 +66,16 @@ export async function addFavourites(userId: string, recipe: Recipe) {
 
   if (updateError) throw updateError;
   return updatedFavourites;
+} 
+
+export async function fetchUserProfile(userId: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("userId", userId)
+    .single();
+
+  if (error) throw error;
+  return data;
 }
+

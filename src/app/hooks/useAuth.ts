@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/hooks";
 import {
   signUpUserThunk,
   loginUserThunk,
   logoutUserThunk,
   addFavouritesThunk,
-} from "../../features/auth/authThunks";
+  fetchProfileThunk,
+} from "@/features/auth/authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
 export function useAuth() {
@@ -13,7 +15,14 @@ export function useAuth() {
     (state) => state.auth
   );
 
-  // Auth akcije sa payload-om kao objekat
+  // automatski fetch profila kada se user promeni
+  useEffect(() => {
+    if (user && !profile) {
+      dispatch(fetchProfileThunk(user.id));
+    }
+  }, [user, profile, dispatch]);
+
+  // akcije
   const signup = (payload: { email: string; password: string; username: string }) =>
     dispatch(signUpUserThunk(payload));
 

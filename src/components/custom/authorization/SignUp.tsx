@@ -42,7 +42,9 @@ export default function SignUp() {
         password: values.password,
         username: values.username
       });
-      navigate("/"); // Uspešan signup, preusmeri na home
+      navigate("/");
+
+       // Uspešan signup, preusmeri na home
     } catch (error) {
       console.error("Signup error:", error);
       // Ovde možeš dodati prikaz greške korisniku ako želiš

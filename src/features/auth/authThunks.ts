@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   addFavourites,
+  fetchUserProfile,
 } from "../../services/authServices";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -34,5 +35,13 @@ export const addFavouritesThunk = createAsyncThunk(
   "auth/addFavourite",
   async ({ userId, recipe }: { userId: string; recipe: Recipe }) => {
     return await addFavourites(userId, recipe);
+  }
+);
+
+
+export const fetchProfileThunk = createAsyncThunk(
+  "auth/fetchProfile",
+  async (userId: string) => {
+    return await fetchUserProfile(userId);
   }
 );
