@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { log } from "console";
 
 
 type SignUpFormValues = {
@@ -45,8 +46,7 @@ export default function SignUp() {
       navigate("/");
 
     } catch (error) {
-      
-      // Ovde možeš dodati prikaz greške korisniku ako želiš
+      console.log(error)
     }
   }
 
