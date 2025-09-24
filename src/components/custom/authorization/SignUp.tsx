@@ -1,54 +1,75 @@
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { log } from "console";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
+// Schema sa Zod
+const schema = z
+  .object({
+    email: z
+      .string()
+      .min(1, "Email required")
+      .email("Invalid email"),
+    username: z
+      .string()
+      .min(3, "Min 3 chars")
+      .max(24, "Max 24 chars")
+      .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, _"),
+    password: z
+      .string()
+      .min(6, "Min 6 chars")
+      .refine((v) => /[A-Z]/.test(v) && /[0-9]/.test(v), {
+        message: "Add a number & capital letter",
+      }),
+    confirmPassword: z.string().min(1, "Confirm password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-type SignUpFormValues = {
-  email: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-};
+type SignUpFormValues = z.infer<typeof schema>;
 
 export default function SignUp() {
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, isSubmitted, dirtyFields }
+    setError,
+    formState: { errors, isSubmitting, isSubmitted, dirtyFields },
   } = useForm<SignUpFormValues>({
-    mode: "onSubmit",        
+    resolver: zodResolver(schema),
+    mode: "onSubmit",
     reValidateMode: "onSubmit",
-    defaultValues: { email: "", username: "", password: "", confirmPassword: "" }
+    defaultValues: { email: "", username: "", password: "", confirmPassword: "" },
   });
-
-  const { signup } = useAuth();
-  const navigate = useNavigate();
 
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
 
-  // Real‑time samo za match password-a (pre submit-a)
   const showLiveMismatch =
     !isSubmitted &&
     dirtyFields.confirmPassword &&
     confirmPassword.length > 0 &&
     confirmPassword !== password;
 
-  async function onSubmit(values: SignUpFormValues) {
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
     try {
       await signup({
-        email: values.email,
-        password: values.password,
-        username: values.username
+        email: data.email,
+        username: data.username,
+        password: data.password,
       });
       navigate("/");
-
     } catch (error) {
-      console.log(error)
+      setError("email", { message: "This email is already registered." });
+      setError("username", { message: "This username is already taken." });
     }
-  }
+  };
 
   function fieldError(name: keyof SignUpFormValues) {
     return isSubmitted && errors[name]?.message;
@@ -56,9 +77,8 @@ export default function SignUp() {
 
   function inputClasses(name: keyof SignUpFormValues) {
     if (fieldError(name)) return "border-red-400 focus:border-red-500";
-    // Ako je confirmPassword u toku i NE POKLAPA se (pre submit-a) oboji crveno
-    if (name === "confirmPassword" && showLiveMismatch) return "border-red-400 focus:border-red-500";
-    // Ako je confirmPassword dirnut i poklapa se (pre ili posle submit-a) oboji zeleno
+    if (name === "confirmPassword" && showLiveMismatch)
+      return "border-red-400 focus:border-red-500";
     if (
       name === "confirmPassword" &&
       dirtyFields.confirmPassword &&
@@ -86,13 +106,7 @@ export default function SignUp() {
           type="email"
           className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${inputClasses("email")}`}
           placeholder="you@example.com"
-          {...register("email", {
-            required: "Email required",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Invalid email"
-            }
-          })}
+          {...register("email")}
           aria-invalid={!!fieldError("email")}
         />
         {fieldError("email") && (
@@ -107,15 +121,7 @@ export default function SignUp() {
           type="text"
           className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${inputClasses("username")}`}
           placeholder="Username"
-          {...register("username", {
-            required: "Username required",
-            minLength: { value: 3, message: "Min 3 chars" },
-            maxLength: { value: 24, message: "Max 24 chars" },
-            pattern: {
-              value: /^[a-zA-Z0-9_]+$/,
-              message: "Only letters, numbers, _"
-            }
-          })}
+          {...register("username")}
           aria-invalid={!!fieldError("username")}
         />
         {fieldError("username") && (
@@ -130,16 +136,7 @@ export default function SignUp() {
           type="password"
           className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${inputClasses("password")}`}
           placeholder="••••••••"
-          {...register("password", {
-            required: "Password required",
-            minLength: { value: 6, message: "Min 6 chars" },
-            validate: {
-              strength: v =>
-                /[A-Z]/.test(v) && /[0-9]/.test(v)
-                  ? true
-                  : "Add a number & capital letter"
-            }
-          })}
+          {...register("password")}
           aria-invalid={!!fieldError("password")}
         />
         {fieldError("password") && (
@@ -154,10 +151,7 @@ export default function SignUp() {
           type="password"
           className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${inputClasses("confirmPassword")}`}
           placeholder="Repeat password"
-          {...register("confirmPassword", {
-            required: "Confirm password",
-            validate: v => v === password || "Passwords do not match"
-          })}
+          {...register("confirmPassword")}
           aria-invalid={!!fieldError("confirmPassword") || showLiveMismatch}
         />
         {fieldError("confirmPassword") && (
