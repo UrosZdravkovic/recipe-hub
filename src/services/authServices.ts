@@ -1,8 +1,30 @@
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import { supabase } from "./supabaseClient";
 
+
+export async function isUsernameTaken(username: string) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("userId")          // možemo birati samo id, ne treba sve kolone
+    .eq("username", username)
+    .maybeSingle();        // vraća single object ili null
+
+  if (error) {
+    throw error;
+  }
+
+  return !!data; // true ako username postoji, false ako ne postoji
+}
+
+
 // SIGNUP sa email i password
 export async function signUpUser(email: string, password: string, username: string) {
+
+  const isTaken = await isUsernameTaken(username);
+  if (isTaken) {
+    throw new Error("Username is already taken");
+  }
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -25,6 +47,7 @@ export async function signUpUser(email: string, password: string, username: stri
 
   return user;
 }
+
 
 // LOGIN sa email i password
 export async function loginUser(email: string, password: string) {

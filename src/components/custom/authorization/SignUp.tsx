@@ -65,9 +65,13 @@ export default function SignUp() {
         password: data.password,
       });
       navigate("/");
-    } catch (error) {
-      setError("email", { message: "This email is already registered." });
-      setError("username", { message: "This username is already taken." });
+    } catch (error: any) {
+      if(error.message === "User already registered") {
+        setError("email", { message: "Email already registered" });
+      } else if (error.message === "Username is already taken") {
+        setError("username", { message: "Username is already taken" });
+      }
+        
     }
   };
 
