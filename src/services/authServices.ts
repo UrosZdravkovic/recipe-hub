@@ -2,51 +2,51 @@ import type { Recipe } from "@/features/recipes/recipeSlice";
 import { supabase } from "./supabaseClient";
 
 
-export async function isUsernameTaken(username: string) {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("userId")          // možemo birati samo id, ne treba sve kolone
-    .eq("username", username)
-    .maybeSingle();        // vraća single object ili null
 
-  if (error) {
-    throw error;
+
+export async function signUpUser(
+  email: string,
+  password: string,
+  username: string
+) {
+  // 1️⃣ Provera da li username već postoji u profiles
+  const { data: existingProfile, error: checkError } = await supabase
+    .from("profiles")
+    .select("user_id")
+    .eq("username", username)
+    .maybeSingle();
+
+  if (checkError) {
+    throw checkError;
   }
 
-  return !!data; // true ako username postoji, false ako ne postoji
-}
-
-
-// SIGNUP sa email i password
-export async function signUpUser(email: string, password: string, username: string) {
-
-  const isTaken = await isUsernameTaken(username);
-  if (isTaken) {
+  if (existingProfile) {
     throw new Error("Username is already taken");
   }
 
+  // 2️⃣ Kreiranje auth user-a sa username u metadata
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: { username: username },
+    },
   });
+
   if (error) {
     throw error;
   }
 
   const user = data.user;
+  if (!user) {
+    throw new Error("Signup failed");
+  }
 
-  if (!user) throw new Error("Signup failed");
-
-  const { error: profileError } = await supabase.from("profiles").insert({
-    userId: user.id,
-    username: username,
-    favourites: [],
-  });
-
-  if (profileError) throw profileError;
-
+  // 3️⃣ Vrati korisnika
   return user;
 }
+
+
 
 
 // LOGIN sa email i password
@@ -76,7 +76,7 @@ export async function addFavourites(userId: string, recipe: Recipe) {
   const { data, error } = await supabase
     .from("profiles")
     .select("favourites")
-    .eq("userId", userId) // ovde isto userId
+    .eq("user_id", userId) // ovde isto userId
     .single();
 
   if (error) throw error;
@@ -87,17 +87,17 @@ export async function addFavourites(userId: string, recipe: Recipe) {
   const { error: updateError } = await supabase
     .from("profiles")
     .update({ favourites: updatedFavourites })
-    .eq("userId", userId);
+    .eq("user_id", userId);
 
   if (updateError) throw updateError;
   return updatedFavourites;
-} 
+}
 
 export async function fetchUserProfile(userId: string) {
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("userId", userId)
+    .eq("user_id", userId)
     .single();
 
   if (error) throw error;
