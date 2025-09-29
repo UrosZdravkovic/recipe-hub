@@ -1,39 +1,58 @@
 import React from "react";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import { Heart, ExternalLink } from "lucide-react";
+import { useAuth } from "@/app/hooks/useAuth";
 
-const RecipeListCardItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { recipe: Recipe }>(
-  ({ recipe, ...props }, ref) => (
+const RecipeListCardItem = React.forwardRef<HTMLDivElement,React.HTMLAttributes<HTMLDivElement> & { recipe: Recipe }>(({ recipe, className, ...rest }, ref) => {
+  const { profile, addFavourite } = useAuth();
+
+  const handleAddFavourite = async () => {
+    addFavourite(
+      { userId: profile?.id as string, recipe }
+    )
+  }
+
+  return (
     <div
       ref={ref}
-      {...props}
-      className={`flex items-center gap-6 p-5 bg-white rounded-2xl shadow-md max-[500px]:p-3 hover:shadow-lg transition-shadow min-h-[120px] cursor-pointer ${props.className ?? ""}`}
+      {...rest}
+      className={`flex items-center gap-6 p-5 bg-white rounded-2xl shadow-md max-[500px]:p-3 hover:shadow-lg transition-shadow min-h-[120px] cursor-pointer ${className ?? ""}`}
     >
       <div className="rounded-xl flex items-center justify-center overflow-hidden bg-gray-100 w-40 h-40 min-h-40 min-w-40 max-[500px]:w-24 max-[500px]:h-24 max-[500px]:min-h-24 max-[500px]:min-w-24 flex-shrink-0">
         <img
           src={recipe.image}
           alt={recipe.title}
           className="object-cover w-full h-full"
+          loading="lazy"
         />
       </div>
+
       <div className="flex-1 flex flex-col justify-between h-full">
         <div>
-          <h3 className="text-xl max-[500px]:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">{recipe.title}</h3>
+          <h3 className="text-xl max-[500px]:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">
+            {recipe.title}
+          </h3>
           <ul className="flex flex-wrap gap-1 mt-1">
             {recipe.ingredients.slice(0, 3).map((ingredient, idx) => (
-              <li key={idx} className="bg-gray-100 rounded px-2 py-1 text-xs max-[500px]:text-[10px] text-gray-700">
+              <li
+                key={idx}
+                className="bg-gray-100 rounded px-2 py-1 text-xs max-[500px]:text-[10px] text-gray-700"
+              >
                 {ingredient}
               </li>
             ))}
             {recipe.ingredients.length > 3 && (
-              <li className="text-xs text-gray-400 px-1 py-1 hover:text-gray-700 transition-colors duration-300  ">
+              <li className="text-xs text-gray-400 px-1 py-1 hover:text-gray-700 transition-colors duration-300">
                 +{recipe.ingredients.length - 3} more
               </li>
             )}
           </ul>
         </div>
+
         <div className="flex gap-3 mt-3">
           <button
+            type="button"
+            onClick={handleAddFavourite}
             className="p-2 rounded-full hover:bg-gray-100 transition"
             aria-label="Favorite"
           >
@@ -45,13 +64,16 @@ const RecipeListCardItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes
             rel="noopener noreferrer"
             className="p-2 rounded-full hover:bg-gray-100 transition"
             aria-label="See full recipe"
+            onClick={(e) => e.stopPropagation()}
           >
             <ExternalLink size={20} className="text-gray-400" />
           </a>
         </div>
       </div>
     </div>
-  )
-);
+  );
+});
+
+RecipeListCardItem.displayName = "RecipeListCardItem";
 
 export default RecipeListCardItem;

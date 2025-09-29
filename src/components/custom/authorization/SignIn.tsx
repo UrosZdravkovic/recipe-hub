@@ -19,7 +19,7 @@ export default function SignIn() {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting, isSubmitted },
+    formState: { errors, isSubmitting },
   } = useForm<SignInFormValues>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
@@ -27,18 +27,18 @@ export default function SignIn() {
     defaultValues: { email: "", password: "" },
   });
 
-  // Zadržavamo tvoj način: greške samo kroz setError + errors objekat
+  // Zadržiš postojeći onSubmit (bez izmene)...
   const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
     try {
       await login({ email: data.email, password: data.password });
       navigate("/");
     } catch (error: any) {
-      console.log("Login error:", error);
       setError("email", { message: "Invalid email or password" });
-
     }
   };
 
+  // Skupi jedinstvene poruke iz polja (prikaz iznad form polja)
+ 
   return (
     <form
       noValidate
@@ -52,60 +52,56 @@ export default function SignIn() {
         </p>
       </div>
 
+      {(errors.email || errors.password) && (
+        <div className="space-y-1 rounded-md border border-red-300 bg-red-50 px-3 py-2">
+          {errors.email?.message && (
+            <p className="text-xs text-red-600 leading-relaxed">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Email */}
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Email</label>
         <div className="relative">
           <input
             type="email"
             placeholder="you@example.com"
-            className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition
-              ${
-                errors.email
-                  ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200"
-                  : "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
-              } bg-white`}
+            className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${
+              errors.email
+                ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                : "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+            } bg-white`}
             {...register("email")}
             aria-invalid={!!errors.email}
           />
         </div>
-        {isSubmitted && errors.email && (
-          <p className="text-xs text-red-500">{errors.email.message}</p>
-        )}
       </div>
 
       {/* Password */}
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Password</label>
         <div className="relative">
           <input
             type="password"
             placeholder="••••••••"
-            className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition
-              ${
-                errors.password
-                  ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200"
-                  : "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
-              } bg-white`}
+            className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${
+              errors.password
+                ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                : "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+            } bg-white`}
             {...register("password")}
             aria-invalid={!!errors.password}
           />
         </div>
-        {isSubmitted && errors.password && (
-          <p className="text-xs text-red-500">{errors.password.message}</p>
-        )}
       </div>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full h-11 rounded-md bg-orange-500 text-white text-sm font-medium
-          disabled:opacity-50 disabled:cursor-not-allowed
-          hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400/50 transition shadow-sm"
+        className="w-full h-11 rounded-md bg-orange-500 text-white text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400/50 transition shadow-sm"
       >
         {isSubmitting ? "Processing..." : "Sign In"}
       </button>
@@ -115,7 +111,7 @@ export default function SignIn() {
         <button
           type="button"
           onClick={() => navigate("/auth/sign-up")}
-          className="text-orange-600 hover:underline font-medium"
+          className="text-orange-600 hover:underline font-medium cursor-pointer"
         >
           Sign up
         </button>

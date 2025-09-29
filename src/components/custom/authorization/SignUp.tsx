@@ -179,7 +179,7 @@ export default function SignUp() {
         type="submit"
         disabled={isSubmitting}
         className="w-full h-11 rounded-md bg-orange-500 text-white text-sm font-medium
-          disabled:opacity-50 disabled:cursor-not-allowed
+          disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer
           hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400/50 transition"
       >
         {isSubmitting ? "Processing..." : "Sign Up"}
