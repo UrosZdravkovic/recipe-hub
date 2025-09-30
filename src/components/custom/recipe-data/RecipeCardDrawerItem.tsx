@@ -1,5 +1,6 @@
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import { ExternalLink } from "lucide-react";
+import FavouriteToggleButton from "./FavouriteToggleButton";
 import BottomHoverWrapper from "../../ui/BottomHoverWrapper";
 import { capitalize } from "./RecipeCard";
 import { useState } from "react";
@@ -18,7 +19,10 @@ export default function RecipeCardDrawerItem({ recipe }: { recipe: Recipe }) {
 
     return (
         <>
-            <h2 className="text-2xl font-bold mb-4">{capitalize(recipe.title)}</h2>
+            <div className="flex items-start justify-between gap-4 mb-4">
+                <h2 className="text-2xl font-bold flex-1 leading-tight">{capitalize(recipe.title)}</h2>
+                <FavouriteToggleButton recipe={recipe} size={24} disableTooltip className="shrink-0" />
+            </div>
             <div className="w-64 h-44 mb-4 flex items-center justify-center">
                 <img
                     src={recipe.image}

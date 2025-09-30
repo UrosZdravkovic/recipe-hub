@@ -1,6 +1,9 @@
 import SelectedIngredients from "./SelectedIngredients"
 import RecipeSearchForm from "./RecipeSearchForm"
 import IngredientsList from "./IngredientsList"
+import FavouritesList from "./FavouritesList"
+import { useState } from "react"
+import { useAuth } from "@/app/hooks/useAuth"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import ProfileControls from "./ProfileControls"
 
@@ -10,13 +13,16 @@ type SidebarProps = {
 }
 
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+    const { user, profile } = useAuth();
+    const favCount = profile?.favourites?.length ?? 0;
+    const [showFavourites, setShowFavourites] = useState(false);
     return (
-        <div className={` bg-orange-50 w-[350px] p-4 relative`}>
+        <div className={`fixed inset-0 z-40 bg-orange-50 w-full max-w-[350px] p-4 shadow-xl transition-transform duration-300 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`}>
             <ProfileControls />
             <button
                 onClick={setCollapsed}
-                className={`fixed transition-all duration-300 ease-in-out rounded-r-3xl cursor-pointer
-                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "left-0 h-[50%] top-2" : "max-[400px]:hidden left-[350px] top-2 h-[40px]"}`}
+                className={`absolute transition-all duration-300 ease-in-out rounded-r-3xl cursor-pointer
+                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "-right-3 top-6 h-[50%]" : "-right-3 top-6 h-[40px]"}`}
             >
                 {collapsed ? (
                     <ChevronRight className="w-3 h-3" />
@@ -37,9 +43,37 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 </button>
             )}
 
-            <SelectedIngredients />
-            <RecipeSearchForm handleCollapse={setCollapsed} />
-            <IngredientsList />
+            <div className="flex items-center gap-2 mt-2 mb-3">
+                <button
+                    type="button"
+                    onClick={() => setShowFavourites(false)}
+                    className={`text-xs font-medium px-3 py-1.5 rounded-md border transition ${!showFavourites ? 'bg-orange-500 border-orange-500 text-white' : 'bg-white border-orange-200 text-gray-600 hover:bg-orange-100'}`}
+                >
+                    Ingredients
+                </button>
+                {user && (
+                    <button
+                        type="button"
+                        onClick={() => setShowFavourites(true)}
+                        className={`relative flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-md border transition ${showFavourites ? 'bg-orange-500 border-orange-500 text-white' : 'bg-white border-orange-200 text-gray-600 hover:bg-orange-100'}`}
+                        aria-label={`Favourites (${favCount})`}
+                    >
+                        <span>Favourites</span>
+                        <span className={`min-w-5 h-5 px-1.5 flex items-center justify-center rounded-full text-[10px] font-semibold ${showFavourites ? 'bg-white/20 text-white' : 'bg-orange-500 text-white'}`}>
+                            {favCount}
+                        </span>
+                    </button>
+                )}
+            </div>
+
+            {!showFavourites && (
+                <>
+                    <SelectedIngredients />
+                    <RecipeSearchForm handleCollapse={setCollapsed} />
+                    <IngredientsList />
+                </>
+            )}
+            {showFavourites && user && <FavouritesList />}
 
         </div>
     )

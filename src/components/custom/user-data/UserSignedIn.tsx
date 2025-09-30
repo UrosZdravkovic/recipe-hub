@@ -1,4 +1,4 @@
-import { Heart, LogOut, UserRound } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -36,15 +36,6 @@ export default function UserSignedIn() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300 transition"
-            aria-label="Show favourites"
-          >
-            <Heart size={16} className="text-orange-600" />
-            <span className="text-sm">Favourites</span>
-          </button>
-
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <button
