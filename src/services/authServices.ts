@@ -41,8 +41,8 @@ export async function signUpUser(
   if (!user) {
     throw new Error("Signup failed");
   }
-
-  // 3️⃣ Vrati korisnika
+  // Oslanjamo se na DB trigger koji kreira red u profiles.
+  // Ako se pojave race problemi, razmotriti retry ili ručni insert ovde.
   return user;
 }
 
@@ -59,7 +59,8 @@ export async function loginUser(email: string, password: string) {
   if (error) throw error;
 
   if (!data.user) throw new Error("Login failed");
-  const user = data.user
+  const user = data.user;
+  // Pretpostavljamo da profil već postoji (trigger). Ako ne, addFavourites će ga kreirati on-demand.
   return user;
 
 }
@@ -73,24 +74,87 @@ export async function logoutUser() {
 
 // Dodavanje u favourites
 export async function addFavourites(userId: string, recipe: Recipe) {
+  // 1. Pokušaj da pročitaš postojeći red (može biti NULL odmah posle signup-a ako trigger kasni)
   const { data, error } = await supabase
     .from("profiles")
     .select("favourites")
-    .eq("user_id", userId) // ovde isto userId
-    .single();
+    .eq("user_id", userId)
+    .maybeSingle();
 
-  if (error) throw error;
+  if (error) {
+    // Ako je stvarno greška (ne samo 'row not found'), prosledi
+    if ((error as any).code !== 'PGRST116') { // PGRST116 = no rows
+      console.error('[addFavourites] select error', error);
+      throw error;
+    }
+  }
 
-  const existingFavourites = data.favourites || [];
+  if (!data) {
+    // Red ne postoji još -> kreiraj ga i stavi prvi favourite
+    const { data: inserted, error: insertError } = await supabase
+      .from('profiles')
+      .insert([{ user_id: userId, favourites: [recipe] }])
+      .select('favourites')
+      .single();
+    if (insertError) {
+      console.error('[addFavourites] insert (on-demand) failed', insertError);
+      throw insertError;
+    }
+    return inserted.favourites as Recipe[];
+  }
+
+  const existingFavourites: Recipe[] = Array.isArray(data.favourites)
+    ? data.favourites
+    : [];
+
+  const alreadyExists = existingFavourites.some(r => r.id === recipe.id);
+  if (alreadyExists) {
+    return existingFavourites; // nema promene
+  }
+
   const updatedFavourites = [...existingFavourites, recipe];
 
-  const { error: updateError } = await supabase
-    .from("profiles")
+  const { data: updateData, error: updateError } = await supabase
+    .from('profiles')
     .update({ favourites: updatedFavourites })
-    .eq("user_id", userId);
+    .eq('user_id', userId)
+    .select('favourites')
+    .maybeSingle();
+
+  if (updateError) {
+    console.error('[addFavourites] update error', updateError);
+    throw updateError;
+  }
+
+  if (!updateData) {
+    throw new Error('Favourites update failed: no row returned');
+  }
+
+  return updateData.favourites as Recipe[];
+}
+
+// Uklanjanje iz favourites (vrati ažuriran niz)
+export async function removeFavourite(userId: string, recipeId: string) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('favourites')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data || !Array.isArray(data.favourites)) return [];
+
+  const filtered = (data.favourites as Recipe[]).filter(r => r.id !== recipeId);
+
+  const { data: updateData, error: updateError } = await supabase
+    .from('profiles')
+    .update({ favourites: filtered })
+    .eq('user_id', userId)
+    .select('favourites')
+    .maybeSingle();
 
   if (updateError) throw updateError;
-  return updatedFavourites;
+  return (updateData?.favourites as Recipe[]) ?? filtered;
 }
 
 export async function fetchUserProfile(userId: string) {

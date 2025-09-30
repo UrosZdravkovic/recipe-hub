@@ -5,13 +5,15 @@ import {
   loginUserThunk,
   logoutUserThunk,
   addFavouritesThunk,
+  removeFavouriteThunk,
+  toggleFavouriteThunk,
   fetchProfileThunk,
 } from "@/features/auth/authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
-  const { user, profile, loading, error } = useAppSelector(
+  const { user, profile, loading, favouritesLoading, error } = useAppSelector(
     (state) => state.auth
   );
 
@@ -36,14 +38,23 @@ export function useAuth() {
   const addFavourite = (payload: { userId: string; recipe: Recipe }) =>
     dispatch(addFavouritesThunk(payload));
 
+  const removeFavourite = (payload: { userId: string; recipeId: string }) =>
+    dispatch(removeFavouriteThunk(payload));
+
+  const toggleFavourite = (payload: { userId: string; recipe: Recipe }) =>
+    dispatch(toggleFavouriteThunk(payload));
+
   return {
     user,
     profile,
     loading,
-    error,
+  error,
+  favouritesLoading,
     signup,
     login,
     logout,
     addFavourite,
+    removeFavourite,
+    toggleFavourite,
   };
 }

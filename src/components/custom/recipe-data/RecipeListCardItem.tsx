@@ -1,16 +1,28 @@
 import React from "react";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 import { Heart, ExternalLink } from "lucide-react";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/app/hooks/useAuth";
 
 const RecipeListCardItem = React.forwardRef<HTMLDivElement,React.HTMLAttributes<HTMLDivElement> & { recipe: Recipe }>(({ recipe, className, ...rest }, ref) => {
-  const { profile, addFavourite } = useAuth();
+  const { profile, user, toggleFavourite, favouritesLoading } = useAuth();
 
-  const handleAddFavourite = async () => {
-    addFavourite(
-      { userId: profile?.id as string, recipe }
-    )
-  }
+  const isFavourite = !!profile?.favourites?.some(f => f.id === recipe.id);
+
+  const handleAddFavourite = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Prefer auth user id; profile.id is normalized but user may exist before profile fetch completes
+    const userId = user?.id || profile?.id;
+    if (!userId) {
+      return; // Tooltip će korisniku objasniti zašto je disabled
+    }
+    try {
+      await toggleFavourite({ userId, recipe });
+    } catch (error) {
+      console.error("Error adding to favourites:", error);
+    }
+  };
+
 
   return (
     <div
@@ -49,15 +61,37 @@ const RecipeListCardItem = React.forwardRef<HTMLDivElement,React.HTMLAttributes<
           </ul>
         </div>
 
-        <div className="flex gap-3 mt-3">
-          <button
-            type="button"
-            onClick={handleAddFavourite}
-            className="p-2 rounded-full hover:bg-gray-100 transition"
-            aria-label="Favorite"
-          >
-            <Heart size={20} className="text-gray-400" />
-          </button>
+        <div className="flex gap-3 mt-3 items-center">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  onClick={handleAddFavourite}
+                  disabled={!user || favouritesLoading}
+                  className={`p-2 rounded-full transition relative ${(!user || favouritesLoading) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-100'}`}
+                  aria-label={isFavourite ? "Remove from favourites" : "Add to favourites"}
+                >
+                  <Heart
+                    size={20}
+                    className={
+                      isFavourite
+                        ? 'text-red-500 fill-red-500 drop-shadow-sm'
+                        : 'text-gray-400'
+                    }
+                  />
+                  <span className="sr-only">
+                    {isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+                  </span>
+                </button>
+              </TooltipTrigger>
+              {!user && (
+                <TooltipContent side="top">
+                  <p className="text-xs">Sign in to add favourites</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
           <a
             href={recipe.sourceUrl}
             target="_blank"

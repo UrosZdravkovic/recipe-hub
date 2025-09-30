@@ -2,6 +2,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/app/hooks/useAuth";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
@@ -13,7 +14,7 @@ type SignInFormValues = z.infer<typeof schema>;
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user, profile } = useAuth();
 
   const {
     register,
@@ -30,14 +31,23 @@ export default function SignIn() {
   // Zadržiš postojeći onSubmit (bez izmene)...
   const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
     try {
-      await login({ email: data.email, password: data.password });
-      navigate("/");
+      const loggedInUser = await login({ email: data.email, password: data.password });
+      // Odmah možeš pristupiti auth user objektu (iz rezultata thunka), profil stiže kroz fetchProfileThunk
+      console.log("Logged in user (auth object):", loggedInUser?.id);
+      // Nemoj odmah koristiti profile!.id jer se profil još uvek učitava asinkrono
     } catch (error: any) {
       setError("email", { message: "Invalid email or password" });
     }
   };
 
-  // Skupi jedinstvene poruke iz polja (prikaz iznad form polja)
+  // Navigacija tek kada profil stigne (ako je to bitno za dalje ekrane)
+  useEffect(() => {
+    if (user && profile) {
+      navigate("/");
+    }
+  }, [user, profile, navigate]);
+
+
  
   return (
     <form

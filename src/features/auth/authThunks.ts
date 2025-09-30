@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   addFavourites,
+  removeFavourite,
   fetchUserProfile,
 } from "../../services/authServices";
 import type { Recipe } from "@/features/recipes/recipeSlice";
@@ -34,6 +35,29 @@ export const logoutUserThunk = createAsyncThunk("auth/logout", async () => {
 export const addFavouritesThunk = createAsyncThunk(
   "auth/addFavourite",
   async ({ userId, recipe }: { userId: string; recipe: Recipe }) => {
+    return await addFavourites(userId, recipe);
+  }
+);
+
+export const removeFavouriteThunk = createAsyncThunk(
+  "auth/removeFavourite",
+  async ({ userId, recipeId }: { userId: string; recipeId: string }) => {
+    return await removeFavourite(userId, recipeId);
+  }
+);
+
+export const toggleFavouriteThunk = createAsyncThunk(
+  "auth/toggleFavourite",
+  async (
+    { userId, recipe }: { userId: string; recipe: Recipe },
+    { getState }
+  ) => {
+    const state: any = getState();
+    const favourites: Recipe[] = state.auth.profile?.favourites || [];
+    const exists = favourites.some((r) => r.id === recipe.id);
+    if (exists) {
+      return await removeFavourite(userId, recipe.id);
+    }
     return await addFavourites(userId, recipe);
   }
 );
