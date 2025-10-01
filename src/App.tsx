@@ -1,4 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import { useEffect, useState } from 'react';
+import { supabase } from '@/services/supabaseClient';
 import Home from './pages/Home'
 import AuthLayout from "./pages/Auth"
 import SignUp from "./components/custom/authorization/SignUp"
@@ -33,9 +35,30 @@ const router = createBrowserRouter([
   }
 ]);
 
+function AuthRehydrationGate({ children }: { children: React.ReactNode }) {
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    supabase.auth.getSession().then(() => { if (active) setChecked(true); });
+    return () => { active = false; };
+  }, []);
+
+  if (!checked) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center text-sm text-gray-500">
+        <div className="animate-pulse">Loading…</div>
+      </div>
+    );
+  }
+  return <>{children}</>;
+}
+
 export default function App() {
   return (
-    <RouterProvider router={router} />
+    <AuthRehydrationGate>
+      <RouterProvider router={router} />
+    </AuthRehydrationGate>
   )
 }
 
