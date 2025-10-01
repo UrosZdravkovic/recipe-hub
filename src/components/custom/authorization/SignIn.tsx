@@ -15,6 +15,7 @@ type SignInFormValues = z.infer<typeof schema>;
 export default function SignIn() {
   const navigate = useNavigate();
   const { login, user, profile } = useAuth();
+  const waitingForProfile = !!user && !profile; // user stigao, profil još ne
 
   const {
     register,
@@ -110,10 +111,10 @@ export default function SignIn() {
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || waitingForProfile}
         className="w-full h-11 rounded-md bg-orange-500 text-white text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400/50 transition shadow-sm"
       >
-        {isSubmitting ? "Processing..." : "Sign In"}
+        {(isSubmitting || waitingForProfile) ? "Processing..." : "Sign In"}
       </button>
 
       <p className="text-[11px] text-center text-gray-400">

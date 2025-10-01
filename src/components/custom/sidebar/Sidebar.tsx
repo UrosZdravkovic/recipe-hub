@@ -2,7 +2,7 @@ import SelectedIngredients from "./SelectedIngredients"
 import RecipeSearchForm from "./RecipeSearchForm"
 import IngredientsList from "./IngredientsList"
 import FavouritesList from "./FavouritesList"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuth } from "@/app/hooks/useAuth"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import ProfileControls from "./ProfileControls"
@@ -16,6 +16,13 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     const { user, profile } = useAuth();
     const favCount = profile?.favourites?.length ?? 0;
     const [showFavourites, setShowFavourites] = useState(false);
+
+    // If user logs out while on favourites tab, revert to ingredients view
+    useEffect(() => {
+        if (!user && showFavourites) {
+            setShowFavourites(false);
+        }
+    }, [user, showFavourites]);
     return (
         <div className={`fixed inset-0 z-40 bg-orange-50 w-full max-w-[350px] p-4 shadow-xl transition-transform duration-300 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`}>
             <ProfileControls />
@@ -43,15 +50,15 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 </button>
             )}
 
-            <div className="flex items-center gap-2 mt-2 mb-3">
-                <button
-                    type="button"
-                    onClick={() => setShowFavourites(false)}
-                    className={`text-xs font-medium px-3 py-1.5 rounded-md border transition ${!showFavourites ? 'bg-orange-500 border-orange-500 text-white' : 'bg-white border-orange-200 text-gray-600 hover:bg-orange-100'}`}
-                >
-                    Ingredients
-                </button>
-                {user && (
+            {user && (
+                <div className="flex items-center gap-2 mt-2 mb-3">
+                    <button
+                        type="button"
+                        onClick={() => setShowFavourites(false)}
+                        className={`text-xs font-medium px-3 py-1.5 rounded-md border transition ${!showFavourites ? 'bg-orange-500 border-orange-500 text-white' : 'bg-white border-orange-200 text-gray-600 hover:bg-orange-100'}`}
+                    >
+                        Ingredients
+                    </button>
                     <button
                         type="button"
                         onClick={() => setShowFavourites(true)}
@@ -63,8 +70,8 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                             {favCount}
                         </span>
                     </button>
-                )}
-            </div>
+                </div>
+            )}
 
             {!showFavourites && (
                 <>
