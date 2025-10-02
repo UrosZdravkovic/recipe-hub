@@ -47,11 +47,14 @@ const ingredientsSlice = createSlice({
     },
     hydrateSelectedIngredients: (state, action: PayloadAction<Ingredient[]>) => {
       state.selectedIngredients = action.payload;
-    }
+    },
+    resetSelectedIngredients: (state) => {
+      state.selectedIngredients = [];
+    },
   },
 });
 
-export const { addIngredient, removeIngredient, clearSelectedIngredients, hydrateSelectedIngredients } =
+export const { addIngredient, removeIngredient, clearSelectedIngredients, hydrateSelectedIngredients, resetSelectedIngredients } =
   ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

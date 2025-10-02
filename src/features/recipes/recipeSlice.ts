@@ -74,7 +74,13 @@ const recipeSlice = createSlice({
     hydrateRecipes: (state, action: PayloadAction<{ recipes: Recipe[]; hasSearched: boolean }>) => {
       state.recipes = action.payload.recipes;
       state.hasSearched = action.payload.hasSearched;
-    }
+    },
+    resetRecipes: (state) => {
+      state.recipes = [];
+      state.hasSearched = false;
+      state.error = null;
+      state.loading = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -95,6 +101,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { setRecipes, hydrateRecipes } = recipeSlice.actions;
+export const { setRecipes, hydrateRecipes, resetRecipes } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

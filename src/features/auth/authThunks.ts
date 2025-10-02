@@ -7,6 +7,7 @@ import {
   removeFavourite,
   fetchUserProfile,
 } from "../../services/authServices";
+import { clearPersistedState } from "@/lib/persist";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
 // Signup
@@ -28,7 +29,9 @@ export const loginUserThunk = createAsyncThunk(
 
 // Logout
 export const logoutUserThunk = createAsyncThunk("auth/logout", async () => {
-  return await logoutUser();
+  await logoutUser();
+  clearPersistedState(); // remove persisted UI snapshot (recipes, ingredients)
+  return true;
 });
 
 // Add Favourite

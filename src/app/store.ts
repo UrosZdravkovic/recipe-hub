@@ -1,17 +1,35 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { loadPersistedState, persistState } from "@/lib/persist";
+import { loadPersistedState, persistState, clearPersistedState } from "@/lib/persist";
 
-import recipeReducer from "../features/recipes/recipeSlice";
-import ingredientsReducer from "../features/recipes/ingredientsSlice";
+import recipeReducer, { resetRecipes } from "../features/recipes/recipeSlice";
+import ingredientsReducer, { resetSelectedIngredients } from "../features/recipes/ingredientsSlice";
 import authReducer from "../features/auth/authSlice";
+import { logoutUserThunk, loginUserThunk } from "@/features/auth/authThunks";
 
 // Kreiranje store-a
+const resetOnLogoutMiddleware = (storeAPI: any) => (next: any) => (action: any) => {
+  const result = next(action);
+  if (action.type === logoutUserThunk.fulfilled.type) {
+    storeAPI.dispatch(resetRecipes());
+    storeAPI.dispatch(resetSelectedIngredients());
+    clearPersistedState();
+  }
+  // When logging in from an anonymous state, wipe previous anonymous UI snapshot
+  if (action.type === loginUserThunk.fulfilled.type) {
+    storeAPI.dispatch(resetRecipes());
+    storeAPI.dispatch(resetSelectedIngredients());
+    clearPersistedState();
+  }
+  return result;
+};
+
 export const store = configureStore({
   reducer: {
-    recipes: recipeReducer, // dodajemo recipes slice
-    ingredients: ingredientsReducer, // dodajemo ingredients slice
-    auth: authReducer, // dodajemo auth slice
+    recipes: recipeReducer,
+    ingredients: ingredientsReducer,
+    auth: authReducer,
   },
+  middleware: (getDefault) => getDefault().concat(resetOnLogoutMiddleware)
 });
 
 // Hydration after store creation (non-blocking)

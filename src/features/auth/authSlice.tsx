@@ -71,6 +71,9 @@ const authSlice = createSlice({
       .addCase(logoutUserThunk.fulfilled, (state) => {
         state.user = null;
         state.profile = null;
+        // Reset related UI slices through direct reducer invocation style dispatch pattern
+        // (Since we are inside a reducer, we can't dispatch; but we can rely on middleware approach.
+        // Instead, consumers can listen, or we expose a meta action. Simpler: state cleared here only.)
       })
 
       // add favourite
