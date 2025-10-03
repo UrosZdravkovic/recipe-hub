@@ -9,6 +9,7 @@ import {
     DialogClose
 } from "@/components/ui/dialog";
 import { Settings } from "lucide-react";
+import EditEmailForm from "./EditEmailForm";
 
 export default function EditProfileDialog() {
     return (
@@ -29,6 +30,9 @@ export default function EditProfileDialog() {
                         Make changes to your profile information.
                     </DialogDescription>
                 </DialogHeader>
+                <div> 
+                    <EditEmailForm />
+                </div>
                 <DialogFooter>
                     <DialogClose>Close</DialogClose>
                 </DialogFooter>
