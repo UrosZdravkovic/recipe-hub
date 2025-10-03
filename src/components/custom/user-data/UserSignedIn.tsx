@@ -1,4 +1,4 @@
-import { LogOut, UserRound } from "lucide-react";
+import { LogOut, UserRound, Settings, Edit } from "lucide-react";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"; // prilagodi putanju ako je drugačija
+import EditProfileDialog from "./EditProfileDialog";
 
 export default function UserSignedIn() {
   const { profile, logout } = useAuth();
@@ -37,6 +38,7 @@ export default function UserSignedIn() {
 
         <div className="flex items-center gap-2">
           <Popover open={open} onOpenChange={setOpen}>
+            <EditProfileDialog />
             <PopoverTrigger asChild>
               <button
                 type="button"

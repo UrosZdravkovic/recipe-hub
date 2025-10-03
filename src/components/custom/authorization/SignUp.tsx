@@ -14,7 +14,7 @@ const schema = z
     username: z
       .string()
       .min(3, "Min 3 chars")
-      .max(24, "Max 24 chars")
+      .max(16, "Max 16 chars")
       .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, _"),
     password: z
       .string()
