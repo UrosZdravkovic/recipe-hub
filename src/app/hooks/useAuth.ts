@@ -8,6 +8,7 @@ import {
   removeFavouriteThunk,
   toggleFavouriteThunk,
   fetchProfileThunk,
+  updateUserEmailThunk,
 } from "@/features/auth/authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -33,6 +34,10 @@ export function useAuth() {
     return await dispatch(loginUserThunk(payload)).unwrap();
   }
 
+  const updateEmail = async (newEmail: string) => {
+    return await dispatch(updateUserEmailThunk(newEmail)).unwrap();
+  };
+
   const logout = () => dispatch(logoutUserThunk());
 
   const addFavourite = (payload: { userId: string; recipe: Recipe }) =>
@@ -43,6 +48,8 @@ export function useAuth() {
 
   const toggleFavourite = (payload: { userId: string; recipe: Recipe }) =>
     dispatch(toggleFavouriteThunk(payload));
+
+
 
   return {
     user,
@@ -56,5 +63,6 @@ export function useAuth() {
     addFavourite,
     removeFavourite,
     toggleFavourite,
+    updateEmail
   };
 }

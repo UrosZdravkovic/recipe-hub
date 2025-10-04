@@ -6,7 +6,8 @@ import {
   addFavouritesThunk,
   removeFavouriteThunk,
   toggleFavouriteThunk,
-  fetchProfileThunk,   // 👈 dodaj ovde
+  fetchProfileThunk,
+  updateUserEmailThunk,   // 👈 dodaj ovde
 } from "./authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -135,7 +136,23 @@ const authSlice = createSlice({
       .addCase(fetchProfileThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Fetching profile failed";
-      });
+      })
+
+
+      .addCase(updateUserEmailThunk.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updateUserEmailThunk.fulfilled, (state, action) => {
+        if (state.user && action.payload?.email) {
+          state.user.email = action.payload.email;
+        }
+      })
+      .addCase(updateUserEmailThunk.rejected, (state, action) => {
+        state.error = action.error.message || "Updating email failed";
+      })
+      // updateEmail 
+
+
   },
 });
 

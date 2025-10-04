@@ -168,3 +168,9 @@ export async function fetchUserProfile(userId: string) {
   return data;
 }
 
+
+export async function updateUserEmail(newEmail: string) {
+  const { data, error } = await supabase.auth.updateUser({ email: newEmail });
+  if (error) throw error;
+  return data.user; // Supabase user objekat (može imati email ili new_email)
+}
