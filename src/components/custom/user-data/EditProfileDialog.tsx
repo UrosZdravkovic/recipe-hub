@@ -8,19 +8,21 @@ import {
     DialogFooter,
     DialogClose
 } from "@/components/ui/dialog";
-import { Settings } from "lucide-react";
+import { Edit } from "lucide-react";
 import EditEmailForm from "./EditEmailForm";
 import { EditUsernameForm } from "./EditUsernameForm";
+import ChangePasswordForm from "./ChangePasswordForm";
 
 export default function EditProfileDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
+
                 <button
-                    className="h-9 px-2 cursor-pointer text-xs flex items-center justify-center rounded-lg bg-white border border-orange-200 text-orange-600 hover:bg-orange-50 hover:border-orange-300 transition"
+                    className="h-9 px-2 cursor-pointer text-xs flex gap-1 items-center justify-center rounded-lg bg-white border border-orange-200 text-orange-600 hover:bg-orange-50 hover:border-orange-300 transition"
                 >
-                    <Settings size={16} />
-                    Settings
+                    <Edit size={16} />
+                    <p className="max-[400px]:hidden">Edit Profile</p>
                 </button>
 
             </DialogTrigger>
@@ -31,9 +33,10 @@ export default function EditProfileDialog() {
                         Make changes to your profile information.
                     </DialogDescription>
                 </DialogHeader>
-                <div> 
+                <div className="overflow-scroll max-h-[80vh]">
                     <EditEmailForm />
                     <EditUsernameForm />
+                    <ChangePasswordForm />
                 </div>
                 <DialogFooter>
                     <DialogClose>Close</DialogClose>

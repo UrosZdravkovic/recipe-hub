@@ -9,6 +9,7 @@ import {
   fetchProfileThunk,
   updateUserEmailThunk,
   updateUsernameThunk,   // 👈 dodaj ovde
+  updatePasswordThunk,
 } from "./authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -157,6 +158,17 @@ const authSlice = createSlice({
         if (state.profile) {
           state.profile.username = action.payload?.username;
         }
+      })
+
+      // password update (no state change needed besides error handling)
+      .addCase(updatePasswordThunk.rejected, (state, action) => {
+        state.error = action.error.message || 'Updating password failed';
+      })
+      .addCase(updatePasswordThunk.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updatePasswordThunk.fulfilled, () => {
+        // password updated successfully
       })
 
   },

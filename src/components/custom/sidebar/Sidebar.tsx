@@ -24,7 +24,7 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
         }
     }, [user, showFavourites]);
     return (
-        <div className={`fixed inset-0 z-40 bg-orange-50 w-full max-w-[350px] p-4 shadow-xl transition-transform duration-300 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`}>
+        <div className={`fixed inset-0 z-40 bg-orange-50 w-full max-w-[350px] p-4 shadow-xl transition-transform duration-300 ${collapsed ? '-translate-x-full' : 'translate-x-0'} h-full flex flex-col` }>
             <ProfileControls />
             <button
                 onClick={setCollapsed}
@@ -73,14 +73,16 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 </div>
             )}
 
-            {!showFavourites && (
-                <>
-                    <SelectedIngredients />
-                    <RecipeSearchForm handleCollapse={setCollapsed} />
-                    <IngredientsList />
-                </>
-            )}
-            {showFavourites && user && <FavouritesList />}
+            <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent">
+                {!showFavourites && (
+                    <>  
+                        <SelectedIngredients />
+                        <RecipeSearchForm handleCollapse={setCollapsed} />
+                        <IngredientsList />
+                    </>
+                )}
+                {showFavourites && user && <FavouritesList />}
+            </div>
 
         </div>
     )

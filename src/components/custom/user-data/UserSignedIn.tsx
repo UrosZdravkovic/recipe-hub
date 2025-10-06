@@ -1,4 +1,4 @@
-import { LogOut, UserRound, Settings, Edit } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";

@@ -10,6 +10,7 @@ import {
   fetchProfileThunk,
   updateUserEmailThunk,
   updateUsernameThunk
+  ,updatePasswordThunk
 } from "@/features/auth/authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -43,6 +44,10 @@ export function useAuth() {
     return await dispatch(updateUsernameThunk({ newUsername, userId })).unwrap();
   }
 
+  const updatePassword = async (newPassword: string) => {
+    return await dispatch(updatePasswordThunk(newPassword)).unwrap();
+  }
+
   const logout = () => dispatch(logoutUserThunk());
 
   const addFavourite = (payload: { userId: string; recipe: Recipe }) =>
@@ -69,6 +74,7 @@ export function useAuth() {
     removeFavourite,
     toggleFavourite,
     updateEmail,
-    updateUsername
+    updateUsername,
+    updatePassword
   };
 }

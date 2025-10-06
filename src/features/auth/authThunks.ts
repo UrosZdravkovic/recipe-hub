@@ -8,6 +8,7 @@ import {
   fetchUserProfile,
   updateUserEmail,
   updateUsername,
+  updatePassword,
 } from "../../services/authServices";
 import { clearPersistedState } from "@/lib/persist";
 import type { Recipe } from "@/features/recipes/recipeSlice";
@@ -87,5 +88,12 @@ export const updateUsernameThunk = createAsyncThunk(
   "auth/updateUsername",
   async ({ userId, newUsername }: { userId: string; newUsername: string }) => {
     return await updateUsername(userId, newUsername);
+  }
+);
+
+export const updatePasswordThunk = createAsyncThunk(
+  "auth/updatePassword",
+  async (newPassword: string) => {
+    return await updatePassword(newPassword);
   }
 );

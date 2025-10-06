@@ -12,11 +12,12 @@ type EditEmailFormValues = {
 const COOLDOWN_TIME = 60_000; // 60 sekundi
 
 export default function EditEmailForm() {
-  const { user, updateEmail } = useAuth();
+  const { user, updateEmail, logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [cooldown, setCooldown] = useState(false);
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
+  const [infoMessage, setInfoMessage] = useState<string | null>(null);
 
   const schema = z
     .object({
@@ -82,14 +83,11 @@ export default function EditEmailForm() {
     try {
       await updateEmail(data.email);
       setSuccess(true);
-
-      // Sačuvaj vreme slanja
-      localStorage.setItem("emailUpdateLastSent", Date.now().toString());
-      setCooldown(true);
-      setRemainingTime(COOLDOWN_TIME / 1000);
-
-      // Sakrij success poruku posle 2s
-      setTimeout(() => setSuccess(false), 2000);
+      setInfoMessage("Verification email sent. Please confirm via your current inbox. You will be logged out shortly.");
+      // Odložen logout da bi korisnik video poruku
+      setTimeout(() => {
+        logout();
+      }, 1800);
     } catch (err) {
       console.error(err);
     } finally {
@@ -128,14 +126,9 @@ export default function EditEmailForm() {
                   {errors.email.message}
                 </p>
               )}
-              {!errors.email && cooldown && remainingTime !== null && (
-                <p id="email-status" className="text-xs text-orange-500">
-                  Wait {remainingTime}s before trying again.
-                </p>
-              )}
-              {!errors.email && !cooldown && success && (
+              {!errors.email && success && infoMessage && (
                 <p id="email-status" className="text-xs text-green-600">
-                  Verification email sent.
+                  {infoMessage}
                 </p>
               )}
             </div>

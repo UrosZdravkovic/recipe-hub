@@ -16,7 +16,7 @@ export default function IngredientsList() {
   };
 
   return (
-    <div className="w-full pt-3 pb-6 overflow-y-auto space-y-2 bg-orange-50 rounded-3xl">
+  <div className="w-full pt-3 pb-6 space-y-2 bg-orange-50 rounded-3xl">
       {defaultIngredients.map((cat) => {
         const selectedCount = cat.ingredients.filter((ing) =>
           selectedIngredients.some((sel) => sel.id === ing.id)

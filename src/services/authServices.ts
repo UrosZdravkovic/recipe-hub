@@ -205,3 +205,9 @@ export async function updateUsername(userId: string, newUsername: string) {
 
   return data; // Ažurirani profil
 }
+
+export async function updatePassword(newPassword: string) {
+  const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+  return data.user; // may return user meta; no password is returned obviously
+}
