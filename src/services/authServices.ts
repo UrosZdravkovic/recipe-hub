@@ -173,4 +173,35 @@ export async function updateUserEmail(newEmail: string) {
   const { data, error } = await supabase.auth.updateUser({ email: newEmail });
   if (error) throw error;
   return data.user; // Supabase user objekat (može imati email ili new_email)
+} 
+
+export async function updateUsername(userId: string, newUsername: string) {
+  // Provera da li username već postoji
+  const { data: existingProfile, error: checkError } = await supabase
+    .from("profiles")
+    .select("user_id")
+    .eq("username", newUsername)
+    .maybeSingle();
+
+  if (checkError) {
+    throw checkError;
+  }
+
+  if (existingProfile) {
+    throw new Error("Username is already taken");
+  }
+
+  // Ažuriranje username u profiles tabeli
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ username: newUsername })
+    .eq("user_id", userId)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data; // Ažurirani profil
 }

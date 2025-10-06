@@ -9,6 +9,7 @@ import {
   toggleFavouriteThunk,
   fetchProfileThunk,
   updateUserEmailThunk,
+  updateUsernameThunk
 } from "@/features/auth/authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -36,7 +37,11 @@ export function useAuth() {
 
   const updateEmail = async (newEmail: string) => {
     return await dispatch(updateUserEmailThunk(newEmail)).unwrap();
-  };
+  }; 
+
+  const updateUsername = async (newUsername: string, userId: string) => {
+    return await dispatch(updateUsernameThunk({ newUsername, userId })).unwrap();
+  }
 
   const logout = () => dispatch(logoutUserThunk());
 
@@ -63,6 +68,7 @@ export function useAuth() {
     addFavourite,
     removeFavourite,
     toggleFavourite,
-    updateEmail
+    updateEmail,
+    updateUsername
   };
 }

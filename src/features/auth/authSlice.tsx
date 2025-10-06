@@ -7,7 +7,8 @@ import {
   removeFavouriteThunk,
   toggleFavouriteThunk,
   fetchProfileThunk,
-  updateUserEmailThunk,   // 👈 dodaj ovde
+  updateUserEmailThunk,
+  updateUsernameThunk,   // 👈 dodaj ovde
 } from "./authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -152,6 +153,11 @@ const authSlice = createSlice({
       })
       // updateEmail 
 
+      .addCase(updateUsernameThunk.fulfilled, (state, action) => {
+        if (state.profile) {
+          state.profile.username = action.payload?.username;
+        }
+      })
 
   },
 });

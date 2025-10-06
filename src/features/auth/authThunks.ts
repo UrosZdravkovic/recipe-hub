@@ -7,9 +7,11 @@ import {
   removeFavourite,
   fetchUserProfile,
   updateUserEmail,
+  updateUsername,
 } from "../../services/authServices";
 import { clearPersistedState } from "@/lib/persist";
 import type { Recipe } from "@/features/recipes/recipeSlice";
+
 
 // Signup
 export const signUpUserThunk = createAsyncThunk(
@@ -78,5 +80,12 @@ export const updateUserEmailThunk = createAsyncThunk(
   "auth/updateEmail",
   async (newEmail: string) => {
     return await updateUserEmail(newEmail);
+  }
+);
+
+export const updateUsernameThunk = createAsyncThunk(
+  "auth/updateUsername",
+  async ({ userId, newUsername }: { userId: string; newUsername: string }) => {
+    return await updateUsername(userId, newUsername);
   }
 );
