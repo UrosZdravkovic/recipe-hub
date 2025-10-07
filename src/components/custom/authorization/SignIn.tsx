@@ -2,7 +2,8 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/app/hooks/useAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
@@ -16,6 +17,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const { login, user, profile } = useAuth();
   const waitingForProfile = !!user && !profile; // user stigao, profil još ne
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -96,9 +98,9 @@ export default function SignIn() {
         <label className="block text-sm font-medium text-gray-700">Password</label>
         <div className="relative">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="••••••••"
-            className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${
+            className={`w-full h-11 pr-10 px-3 rounded-md border text-sm outline-none transition ${
               errors.password
                 ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                 : "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
@@ -106,6 +108,16 @@ export default function SignIn() {
             {...register("password")}
             aria-invalid={!!errors.password}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword((p) => !p)}
+            className="absolute inset-y-0 right-2 flex items-center justify-center text-gray-500 hover:text-gray-700 rounded cursor-pointer select-none focus:outline-none focus-visible:ring-0"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
+            tabIndex={0}
+          >
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          </button>
         </div>
       </div>
 

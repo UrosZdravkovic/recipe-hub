@@ -5,18 +5,13 @@ import {
   loginUserThunk,
   logoutUserThunk,
   addFavouritesThunk,
-  removeFavouriteThunk,
-  toggleFavouriteThunk,
   fetchProfileThunk,
-  updateUserEmailThunk,
-  updateUsernameThunk
-  ,updatePasswordThunk
 } from "@/features/auth/authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
-  const { user, profile, loading, favouritesLoading, error } = useAppSelector(
+  const { user, profile, loading, error } = useAppSelector(
     (state) => state.auth
   );
 
@@ -36,45 +31,19 @@ export function useAuth() {
     return await dispatch(loginUserThunk(payload)).unwrap();
   }
 
-  const updateEmail = async (newEmail: string) => {
-    return await dispatch(updateUserEmailThunk(newEmail)).unwrap();
-  }; 
-
-  const updateUsername = async (newUsername: string, userId: string) => {
-    return await dispatch(updateUsernameThunk({ newUsername, userId })).unwrap();
-  }
-
-  const updatePassword = async (newPassword: string) => {
-    return await dispatch(updatePasswordThunk(newPassword)).unwrap();
-  }
-
   const logout = () => dispatch(logoutUserThunk());
 
   const addFavourite = (payload: { userId: string; recipe: Recipe }) =>
     dispatch(addFavouritesThunk(payload));
-
-  const removeFavourite = (payload: { userId: string; recipeId: string }) =>
-    dispatch(removeFavouriteThunk(payload));
-
-  const toggleFavourite = (payload: { userId: string; recipe: Recipe }) =>
-    dispatch(toggleFavouriteThunk(payload));
-
-
 
   return {
     user,
     profile,
     loading,
     error,
-    favouritesLoading,
     signup,
     login,
     logout,
     addFavourite,
-    removeFavourite,
-    toggleFavourite,
-    updateEmail,
-    updateUsername,
-    updatePassword
   };
 }

@@ -2,10 +2,8 @@ import {
     Dialog,
     DialogTrigger,
     DialogContent,
-    DialogHeader,
     DialogTitle,
     DialogDescription,
-    DialogFooter,
     DialogClose
 } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
@@ -26,21 +24,37 @@ export default function EditProfileDialog() {
                 </button>
 
             </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Edit your profile</DialogTitle>
-                    <DialogDescription>
-                        Make changes to your profile information.
+            <DialogContent className="p-0 overflow-hidden sm:max-w-[540px]">
+                {/* Header with top close */}
+                <div className="px-5 py-4 border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+                    <DialogTitle className="text-base font-semibold">Edit your profile</DialogTitle>
+                    <DialogDescription className="text-xs mt-1 text-gray-500">
+                        Update your account information below.
                     </DialogDescription>
-                </DialogHeader>
-                <div className="overflow-scroll max-h-[80vh]">
-                    <EditEmailForm />
-                    <EditUsernameForm />
-                    <ChangePasswordForm />
                 </div>
-                <DialogFooter>
-                    <DialogClose>Close</DialogClose>
-                </DialogFooter>
+
+                {/* Scrollable body */}
+                <div className="max-h-[60vh] overflow-y-auto px-5 py-5 space-y-8">
+                    <div className="space-y-6">
+                        <EditEmailForm />
+                        <div className="h-px bg-gradient-to-r from-transparent via-orange-200/70 to-transparent" />
+                        <EditUsernameForm />
+                        <div className="h-px bg-gradient-to-r from-transparent via-orange-200/70 to-transparent" />
+                        <ChangePasswordForm />
+                    </div>
+                </div>
+
+                {/* Footer with bottom close */}
+                <div className="px-5 py-3 border-t bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/60 flex justify-end gap-2">
+                    <DialogClose asChild>
+                        <button
+                            type="button"
+                            className="h-9 px-4 rounded-md bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 active:scale-[0.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+                        >
+                            Close
+                        </button>
+                    </DialogClose>
+                </div>
             </DialogContent>
         </Dialog>
     );

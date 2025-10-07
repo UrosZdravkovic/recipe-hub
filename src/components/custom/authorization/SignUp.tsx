@@ -1,4 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +36,8 @@ type SignUpFormValues = z.infer<typeof schema>;
 export default function SignUp() {
   const { signup } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -136,13 +140,24 @@ export default function SignUp() {
       {/* Password */}
       <div>
         <label className="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          type="password"
-          className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${inputClasses("password")}`}
-          placeholder="••••••••"
-          {...register("password")}
-          aria-invalid={!!fieldError("password")}
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            className={`w-full h-11 pr-10 px-3 rounded-md border text-sm outline-none transition ${inputClasses("password")}`}
+            placeholder="••••••••"
+            {...register("password")}
+            aria-invalid={!!fieldError("password")}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(p => !p)}
+            className="absolute inset-y-0 right-2 flex items-center justify-center text-gray-500 hover:text-gray-700 rounded cursor-pointer select-none focus:outline-none focus-visible:ring-0"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
+          >
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          </button>
+        </div>
         {fieldError("password") && (
           <p className="text-xs text-red-500 mt-1">{errors.password?.message}</p>
         )}
@@ -151,13 +166,24 @@ export default function SignUp() {
       {/* Confirm Password */}
       <div>
         <label className="block text-sm font-medium text-gray-700">Repeat password</label>
-        <input
-          type="password"
-          className={`w-full h-11 px-3 rounded-md border text-sm outline-none transition ${inputClasses("confirmPassword")}`}
-          placeholder="Repeat password"
-          {...register("confirmPassword")}
-          aria-invalid={!!fieldError("confirmPassword") || showLiveMismatch}
-        />
+        <div className="relative">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            className={`w-full h-11 pr-10 px-3 rounded-md border text-sm outline-none transition ${inputClasses("confirmPassword")}`}
+            placeholder="Repeat password"
+            {...register("confirmPassword")}
+            aria-invalid={!!fieldError("confirmPassword") || showLiveMismatch}
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(p => !p)}
+            className="absolute inset-y-0 right-2 flex items-center justify-center text-gray-500 hover:text-gray-700 rounded cursor-pointer select-none focus:outline-none focus-visible:ring-0"
+            aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+            aria-pressed={showConfirmPassword}
+          >
+            {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          </button>
+        </div>
         {fieldError("confirmPassword") && (
           <p className="text-xs text-red-500 mt-1">
             {errors.confirmPassword?.message}

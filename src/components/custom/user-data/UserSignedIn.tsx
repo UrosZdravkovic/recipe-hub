@@ -1,4 +1,4 @@
-import { LogOut, UserRound } from "lucide-react";
+import { LogOut, UserRound, Loader2 } from "lucide-react";
 import { useAuth } from "@/app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -7,20 +7,24 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover"; // prilagodi putanju ako je drugačija
-import EditProfileDialog from "./EditProfileDialog";
 
 export default function UserSignedIn() {
   const { profile, logout } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
 
   async function handleSignOut() {
+    if (logoutLoading) return;
+    setLogoutLoading(true);
     try {
       await logout();
       setOpen(false);
       navigate("/");
     } catch (error) {
       console.error("Error signing out:", error);
+    } finally {
+      setLogoutLoading(false);
     }
   }
 
@@ -38,15 +42,15 @@ export default function UserSignedIn() {
 
         <div className="flex items-center gap-2">
           <Popover open={open} onOpenChange={setOpen}>
-            <EditProfileDialog />
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="h-9 w-9 flex items-center justify-center rounded-lg bg-white border border-orange-200 text-orange-600 hover:bg-orange-50 hover:border-orange-300 transition"
+                disabled={logoutLoading}
+                className="h-9 w-9 flex items-center justify-center rounded-lg bg-white border border-orange-200 text-orange-600 hover:bg-orange-50 hover:border-orange-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Sign out"
                 title="Sign out"
               >
-                <LogOut size={16} />
+                {logoutLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut size={16} />}
               </button>
             </PopoverTrigger>
             <PopoverContent
@@ -61,13 +65,15 @@ export default function UserSignedIn() {
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={handleSignOut}
-                  className="flex-1 h-8 text-xs font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition"
+                  disabled={logoutLoading}
+                  className="flex-1 h-8 text-xs font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  Yes
+                  {logoutLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Yes'}
                 </button>
                 <button
                   onClick={() => setOpen(false)}
-                  className="flex-1 h-8 text-xs font-medium rounded-md border border-orange-200 bg-white text-orange-700 hover:bg-orange-50 transition"
+                  disabled={logoutLoading}
+                  className="flex-1 h-8 text-xs font-medium rounded-md border border-orange-200 bg-white text-orange-700 hover:bg-orange-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   No
                 </button>

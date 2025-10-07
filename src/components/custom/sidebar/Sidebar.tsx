@@ -4,7 +4,7 @@ import IngredientsList from "./IngredientsList"
 import FavouritesList from "./FavouritesList"
 import { useState, useEffect } from "react"
 import { useAuth } from "@/app/hooks/useAuth"
-import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, PanelLeftClose } from "lucide-react"
 import ProfileControls from "./ProfileControls"
 
 type SidebarProps = {
@@ -29,7 +29,7 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
             <button
                 onClick={setCollapsed}
                 className={`absolute transition-all duration-300 ease-in-out rounded-r-3xl cursor-pointer
-                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "-right-3 top-6 h-[50%]" : "-right-3 top-6 h-[40px]"}`}
+                    w-3 flex items-center justify-center bg-orange-300 text-white hover:bg-orange-200 ${collapsed ? "-right-3 top-6 h-[50%]" : "-right-3 top-6 h-[40px] max-[400px]:hidden"} `}
             >
                 {collapsed ? (
                     <ChevronRight className="w-3 h-3" />
@@ -38,17 +38,17 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 )}
             </button>
 
-            {!collapsed && (
+            {!collapsed && ( 
                 <button
                     type="button"
                     onClick={setCollapsed}
                     aria-label="Zatvori sidebar"
-                    className="hidden max-[400px]:flex items-center justify-center absolute top-2 right-2 h-8 w-8
+                    className="hidden max-[400px]:flex items-center justify-center absolute top-[80px] right-2 h-8 w-8
                      rounded-full bg-orange-500 text-white shadow-md hover:bg-orange-600 active:scale-95 transition"
                 >
-                    <X className="w-4 h-4" />
+                    <PanelLeftClose className="w-4 h-4" />
                 </button>
-            )}
+            )} 
 
             {user && (
                 <div className="flex items-center gap-2 mt-2 mb-3">
@@ -73,7 +73,8 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 </div>
             )}
 
-            <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent">
+            {/* Added extra right padding (pr-3) to create spacing between content and the scrollbar */}
+            <div className="flex-1 overflow-y-auto pr-3 scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent">
                 {!showFavourites && (
                     <>  
                         <SelectedIngredients />
