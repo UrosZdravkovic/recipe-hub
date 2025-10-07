@@ -5,8 +5,4 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# SPA fallback so react-router-dom works on refresh
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Redirects su konsolidovani u root _redirects fajl (/* -> /index.html 200)
