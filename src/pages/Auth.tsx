@@ -1,4 +1,4 @@
-import bgImage from "@/assets/images/backgrond.jpg";
+import bgImage from "@/assets/images/backgrond.webp";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import SignIn from "@/components/custom/authorization/SignIn";
