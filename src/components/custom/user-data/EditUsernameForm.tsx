@@ -12,7 +12,7 @@ type EditUsernameFormValues = {
 
 
 export const EditUsernameForm = () => {
-    const { profile, updateUsername, user } = useAuth();
+    const { profile, user, updateUsername } = useAuth();
 
     const schema = z.object({
         username: z.string().min(3, "Min 3 chars").max(20, "Max 20 chars"),

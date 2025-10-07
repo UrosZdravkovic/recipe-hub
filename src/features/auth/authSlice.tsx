@@ -4,7 +4,12 @@ import {
   loginUserThunk,
   logoutUserThunk,
   addFavouritesThunk,
-  fetchProfileThunk,   // 👈 dodaj ovde
+  removeFavouriteThunk,
+  toggleFavouriteThunk,
+  fetchProfileThunk,
+  updateUserEmailThunk,
+  updateUsernameThunk,
+  updatePasswordThunk,
 } from "./authThunks";
 import type { Recipe } from "@/features/recipes/recipeSlice";
 
@@ -17,7 +22,8 @@ export type Profile = {
 type AuthState = {
   user: any | null;
   profile: Profile | null;
-  loading: boolean;
+  loading: boolean; // generic auth/profile loading
+  favouritesLoading: boolean; // add/remove/toggle favourites
   error: string | null;
 };
 
@@ -25,6 +31,7 @@ const initialState: AuthState = {
   user: null,
   profile: null,
   loading: false,
+  favouritesLoading: false,
   error: null,
 };
 
@@ -70,10 +77,48 @@ const authSlice = createSlice({
       })
 
       // add favourite
+      .addCase(addFavouritesThunk.pending, (state) => {
+        state.favouritesLoading = true;
+      })
       .addCase(addFavouritesThunk.fulfilled, (state, action) => {
         if (state.profile) {
           state.profile.favourites = action.payload;
         }
+        state.favouritesLoading = false;
+      })
+      .addCase(addFavouritesThunk.rejected, (state, action) => {
+        state.favouritesLoading = false;
+        state.error = action.error.message || 'Add favourite failed';
+      })
+
+      // remove favourite
+      .addCase(removeFavouriteThunk.pending, (state) => {
+        state.favouritesLoading = true;
+      })
+      .addCase(removeFavouriteThunk.fulfilled, (state, action) => {
+        if (state.profile) {
+          state.profile.favourites = action.payload;
+        }
+        state.favouritesLoading = false;
+      })
+      .addCase(removeFavouriteThunk.rejected, (state, action) => {
+        state.favouritesLoading = false;
+        state.error = action.error.message || 'Remove favourite failed';
+      })
+
+      // toggle favourite
+      .addCase(toggleFavouriteThunk.pending, (state) => {
+        state.favouritesLoading = true;
+      })
+      .addCase(toggleFavouriteThunk.fulfilled, (state, action) => {
+        if (state.profile) {
+          state.profile.favourites = action.payload;
+        }
+        state.favouritesLoading = false;
+      })
+      .addCase(toggleFavouriteThunk.rejected, (state, action) => {
+        state.favouritesLoading = false;
+        state.error = action.error.message || 'Toggle favourite failed';
       })
 
       // 👇 fetch profile
@@ -82,11 +127,53 @@ const authSlice = createSlice({
       })
       .addCase(fetchProfileThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.profile = action.payload;
+        const row: any = action.payload;
+        state.profile = {
+          id: row.user_id,
+          username: row.username ?? '',
+            favourites: Array.isArray(row.favourites) ? row.favourites : [],
+        };
       })
       .addCase(fetchProfileThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Fetching profile failed";
+      })
+
+      // update email
+      .addCase(updateUserEmailThunk.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updateUserEmailThunk.fulfilled, (state, action) => {
+        if (state.user && action.payload?.email) {
+          state.user.email = action.payload.email;
+        }
+      })
+      .addCase(updateUserEmailThunk.rejected, (state, action) => {
+        state.error = action.error.message || 'Updating email failed';
+      })
+
+      // update username
+      .addCase(updateUsernameThunk.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updateUsernameThunk.fulfilled, (state, action) => {
+        if (state.profile && action.payload?.username) {
+          state.profile.username = action.payload.username;
+        }
+      })
+      .addCase(updateUsernameThunk.rejected, (state, action) => {
+        state.error = action.error.message || 'Updating username failed';
+      })
+
+      // update password (only error handling)
+      .addCase(updatePasswordThunk.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updatePasswordThunk.fulfilled, () => {
+        // no state change required on success
+      })
+      .addCase(updatePasswordThunk.rejected, (state, action) => {
+        state.error = action.error.message || 'Updating password failed';
       });
   },
 });
