@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import AuthLayout from "./pages/Auth"
 import SignUp from "./components/custom/authorization/SignUp"
 import SignIn from "./components/custom/authorization/SignIn"
-import TestPage from "./test/TestPage"
+
 
 const router = createBrowserRouter([
   {
@@ -19,10 +19,6 @@ const router = createBrowserRouter([
       {
         index: true,           // /auth -> default (optional)
         element: <SignUp />
-      },
-      {
-        path: "/test",
-        element: <TestPage />, // ova ruta za Semrush test
       },
       {
         path: "sign-in",
